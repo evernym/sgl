@@ -1,0 +1,12 @@
+[
+    {"let": {"n": 1, "of": ["grandparent"]}, "do": ["medical", "school", "delegate"]},
+    {"let": {"n": 1, "from": "each", "of": ["grandparent", "sibling"]}, "do": ["rations"]},
+    {"let": {"or": [
+        {"n": 2, "of": ["grandparent"]},
+        {"and": [
+            {"n": 1, "of": ["grandparent"]},
+            {"n": 0.5001, "of": ["tribal_council"]}
+          ]
+        }
+    ]}, "do":  ["travel", "appoint"]}
+]
