@@ -147,37 +147,82 @@ class Principal:
         return NotImplemented
 
 
-def principal_matches_who(principal: Principal, who: Who) -> bool:
-    if who.id:
-        return principal.id == who.id
-    elif who.role:
-        return principal.roles and (who.role in principal.roles)
-    elif who.any:
-        for item in who.any:
-            if principal_matches_who(principal, item):
-                return True
-    else:
-        for item in who.all:
-            if not principal_matches_who(principal, item):
-                return False
-        return True
-    return False
-
-
-def grant_applies(principals: list, grant: Grant) -> bool:
-    if grant:
-        who = grant.who
-        if who.all:
-            for and_item in who.all:
-                found = False
-                for p in principals:
-                    if principal_matches_who(p, who):
-                        found = True
-                        break
-                if not found:
+def _one_matches_who_ignoring_n(individual: Principal, who: Who) -> bool:
+    if individual and who:
+        if who.id:
+            return individual.id == who.id
+        elif who.role:
+            return individual.roles and (who.role in individual.roles)
+        elif who.any:
+            for item in who.any:
+                if _one_matches_who_ignoring_n(individual, item):
+                    return True
+        else:
+            for item in who.all:
+                if not _one_matches_who_ignoring_n(individual, item):
                     return False
             return True
-        for p in principals:
-            if principal_matches_who(p, who):
-                return True
     return False
+
+
+def is_authorized(individual_or_group, grant_or_who) -> bool:
+    if individual_or_group and grant_or_who:
+        who = grant_or_who if isinstance(grant_or_who, Who) else grant_or_who.who
+        group = [individual_or_group] if isinstance(individual_or_group, Principal) else individual_or_group
+        if who.id:
+            for individual in group:
+                if individual.id == who.id:
+                    return True
+        elif who.role:
+            n = who.n
+            for individual in group:
+                if individual.roles and (who.role in individual.roles):
+                    n -= 1
+                    if n == 0:
+                        return True
+        elif who.any:
+            for item in who.any:
+                if is_authorized(group, item):
+                    return True
+            return False
+        elif who.all:
+            for item in who.all:
+                if not is_authorized(group, item):
+                    return False
+            return True
+    return False
+
+
+def _unique_combinations(items, n):
+    if n == 0:
+        yield {}
+    else:
+        for i in range(len(items)):
+            for cc in _unique_combinations(items[i + 1:], n - 1):
+                yield {items[i]} + cc
+
+
+def _get_matching_minimal_subsets(group: set, who: Who) -> set:
+    """
+    Returns a set of all smallest subsets of the group that match the criteria in who.
+    """
+    answer = set()
+    if group and who:
+        if who.id:
+            for individual in group:
+                if individual.id == who.id:
+                    answer.add({individual})
+        elif who.role:
+            individuals_with_role = set()
+            for individual in group:
+                if individual.roles and (who.role in individual.roles):
+                    individuals_with_role.add(individual)
+            answer = _unique_combinations(individuals_with_role, who.n)
+        elif who.any:
+            for item in who.any:
+                if is_authorized(group, item):
+                    answer = group
+                    break
+        elif who.all:
+            pass
+    return answer

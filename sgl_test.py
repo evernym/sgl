@@ -32,6 +32,7 @@ all_whos = get_all('Who_', Who)
 
 grant_to_Bob = Grant(Who_Bob, "enter")
 grant_to_1_grandparent = Grant(Who_1_grandparent, ["medical", "school", "delegate"])
+grant_to_2_grandparents = Grant(Who_2_grandparents, ["foo"])
 grant_to_1_grandparent_and_1_sibling = Grant(Who(all = [Who_1_grandparent, Who_1_sibling]), ['rations'])
 grant_to_trusted = Grant(Who_trusted, ['travel', 'appoint'])
 
@@ -73,39 +74,43 @@ def test_grant_json_roundtrip():
 
 
 def test_Bob_matches_id():
-    assert principal_matches_who(p_Bob, Who_Bob)
+    assert is_authorized(p_Bob, Who_Bob)
 
 
 def test_Bob_matches_and_with_1_id():
-    assert principal_matches_who(p_Bob, Who_all_with_1_id)
+    assert is_authorized([p_Bob], Who_all_with_1_id)
 
 
 def test_Bob_matches_or_with_1_id():
-    assert principal_matches_who(p_Bob, Who_any_with_1_id)
+    assert is_authorized(p_Bob, Who_any_with_1_id)
 
 
 def test_empty_grant_doesnt_apply():
-    assert not grant_applies([p_Bob], None)
+    assert not is_authorized([p_Bob], None)
 
 
 def test_grant_to_id_applies():
-    assert grant_applies([p_Bob], grant_to_Bob)
+    assert is_authorized([p_Bob], grant_to_Bob)
 
 
 def test_grant_to_1_grandparent_applies():
-    assert grant_applies([p_grandpa], grant_to_1_grandparent)
+    assert is_authorized(p_grandpa, grant_to_1_grandparent)
 
 
 def test_grant_to_1_grandparent_applies_to_2():
-    assert grant_applies([p_grandma, p_grandpa], grant_to_1_grandparent)
+    assert is_authorized([p_grandma, p_grandpa], grant_to_1_grandparent)
 
 
 def test_grant_to_1_grandparent_applies_to_multirole():
-    assert grant_applies([p_grandparent_and_sibling], grant_to_1_grandparent)
+    assert is_authorized([p_grandparent_and_sibling], grant_to_1_grandparent)
 
 
 def test_grant_to_1_grandparent_doesnt_apply_to_others():
-    assert not grant_applies([p_sister, p_tribal_council_1, p_Bob], grant_to_1_grandparent)
+    assert not is_authorized([p_sister, p_tribal_council_1, p_Bob], grant_to_1_grandparent)
+
+
+def test_grant_to_2_grandparent_doesnt_apply_to_1():
+    assert not is_authorized([p_grandpa], grant_to_2_grandparents)
 
 
 if __name__ == '__main__':
