@@ -74,7 +74,6 @@ class Who:
         return NotImplemented
 
 
-
 class Grant:
     def __init__(self, who: Who, privs: list):
         if isinstance(who, dict):
@@ -82,8 +81,8 @@ class Grant:
         elif isinstance(who, Who):
             self.who = who
         else:
-            _precondition(False, "grant must be a Who or dict.")
-        _precondition(privs, "privs must not be empty.")
+            _precondition(False, "'who' must be a Who or dict.")
+        _precondition(privs, "'privs' must not be empty.")
         self.privs = privs
 
     def __str__(self):
@@ -146,6 +145,9 @@ class Principal:
             return self.__dict__ == other.__dict__
         return NotImplemented
 
+    def __hash__(self):
+        return hash((self.id, str(self.roles)))
+
 
 def _one_matches_who_ignoring_n(individual: Principal, who: Who) -> bool:
     if individual and who:
@@ -195,34 +197,36 @@ def is_authorized(individual_or_group, grant_or_who) -> bool:
 
 def _unique_combinations(items, n):
     if n == 0:
-        yield {}
+        yield []
     else:
         for i in range(len(items)):
             for cc in _unique_combinations(items[i + 1:], n - 1):
-                yield {items[i]} + cc
+                yield [items[i]] + cc
 
 
-def _get_matching_minimal_subsets(group: set, who: Who) -> set:
+def _get_matching_minimal_subsets(group: set, who: Who) -> list:
     """
     Returns a set of all smallest subsets of the group that match the criteria in who.
+    This is useful when we're trying to find disjoint combinations of unique individuals
+    that match multiple criteria.
     """
-    answer = set()
+    answer = []
     if group and who:
         if who.id:
             for individual in group:
                 if individual.id == who.id:
-                    answer.add({individual})
+                    answer.add([individual])
         elif who.role:
-            individuals_with_role = set()
+            individuals_with_role = []
             for individual in group:
                 if individual.roles and (who.role in individual.roles):
-                    individuals_with_role.add(individual)
-            answer = _unique_combinations(individuals_with_role, who.n)
+                    individuals_with_role.append(individual)
+            answer = [uc for uc in _unique_combinations(individuals_with_role, who.n)]
         elif who.any:
             for item in who.any:
-                if is_authorized(group, item):
-                    answer = group
-                    break
+                sub_answer = _get_matching_minimal_subsets(group, item)
+                if sub_answer:
+                    answer += sub_answer
         elif who.all:
             pass
     return answer

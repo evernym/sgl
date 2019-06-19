@@ -10,9 +10,11 @@ p_Bob = Principal("Bob")
 p_grandparent_and_sibling = Principal(roles=['sibling', 'grandparent'])
 p_grandpa = Principal(id='Carl', roles=['grandparent'])
 p_grandma = Principal(id='Alice', roles=['grandparent'])
+p_third_grandparent = Principal(id='Fred', roles=['grandparent'])
 p_sister = Principal(id='Susie', roles=['sibling'])
+p_brother = Principal(roles=['sibling'])
 p_tribal_council_1 = Principal(roles=['tribal_council'])
-p_tribal_council_1 = Principal(roles=['tribal_council'])
+p_tribal_council_2 = Principal(roles=['tribal_council'])
 
 all_principals = get_all('p_', Principal)
 
@@ -109,9 +111,31 @@ def test_grant_to_1_grandparent_doesnt_apply_to_others():
     assert not is_authorized([p_sister, p_tribal_council_1, p_Bob], grant_to_1_grandparent)
 
 
-def test_grant_to_2_grandparent_doesnt_apply_to_1():
+def test_grant_to_2_grandparents_doesnt_apply_to_1():
     assert not is_authorized([p_grandpa], grant_to_2_grandparents)
 
+
+from sgl import _get_matching_minimal_subsets as g
+
+def test_g_1_of_2_grandparents():
+    assert g([p_grandma, p_grandpa], grant_to_1_grandparent.who) == [[p_grandma], [p_grandpa]]
+
+
+def test_g_2_of_3_grandparents():
+    assert g([p_grandma, p_grandpa, p_third_grandparent], grant_to_2_grandparents.who) == [
+        [p_grandma, p_grandpa],
+        [p_grandma, p_third_grandparent],
+        [p_grandpa, p_third_grandparent]
+    ]
+
+def test_g_sibling_or_tc():
+    p_brother
+    assert g([p_sister, p_brother, p_tribal_council_1, p_tribal_council_2, p_grandma],
+             Who(any=[Who(n=2, role="sibling"),Who(role="tribal_council")])) == [
+        [p_sister, p_brother],
+        [p_tribal_council_1],
+        [p_tribal_council_2]
+    ]
 
 if __name__ == '__main__':
     import pytest
