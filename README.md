@@ -21,7 +21,7 @@ are the key construct in SGL. They can be stored in any convenient
 data structure, but we'll assume JSON in this discussion. They are
 written like this in JSON:
 
-![JSON format](general-form.png)
+[![JSON format](general-form.png)](https://docs.google.com/presentation/d/1PLhyqbcTVtt67Me7iYK1_jNCtLw8dy2HHkxXFSvnKKI/edit)
 
 The `<actions>` in a grant is just a list of strings that name actions
 and are chosen by developers to fit their problem domain: `vote`,

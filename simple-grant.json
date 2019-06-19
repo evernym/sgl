@@ -1,4 +1,4 @@
 {
-    "let": {"id": "Fred"},
-    "do": ["open_door", "close_door"]
+    "grant": {"id": "Fred"},
+    "privs": ["open_door", "close_door"]
 }
