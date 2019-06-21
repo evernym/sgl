@@ -1,0 +1,9 @@
+{
+  "grant": ["rations"],
+  "to": {
+    "all": [
+      {"role": "grandparent"},
+      {"role": "sibling", "n": 1}
+    ]
+  }
+}

@@ -1,4 +1,0 @@
-{
-    "grant": {"id": "Fred"},
-    "privs": ["open_door", "close_door"]
-}

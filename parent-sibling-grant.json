@@ -1,6 +1,0 @@
-{
-    "and": [
-        {"n": 1, "roles": ["parent"]},
-        {"n": 2, "roles": ["sibling"]}
-    ]
-}

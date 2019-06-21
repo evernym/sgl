@@ -1,0 +1,4 @@
+{
+  "grant": ["enter"],
+  "to": {"role": "employee"}
+}
