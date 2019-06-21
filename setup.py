@@ -39,8 +39,6 @@ setup(
     include_package_data=True,
     package_data={
         '': ['*.json'],
-        # And include any *.msg files found in the 'hello' package, too:
-        'hello': ['*.msg'],
     },
     install_requires=[],
     entry_points={
@@ -48,4 +46,5 @@ setup(
             "realpython=reader.__main__:main",
         ]
     },
+    download_url='https://github.com/dhh1128/sgl/archive/0.9.tar.gz',
 )
