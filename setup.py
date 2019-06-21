@@ -46,5 +46,5 @@ setup(
             "realpython=reader.__main__:main",
         ]
     },
-    download_url='https://github.com/dhh1128/sgl/archive/0.9.tar.gz',
+    download_url='https://github.com/dhh1128/sgl/archive/v0.9.tar.gz',
 )
