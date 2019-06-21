@@ -153,11 +153,11 @@ def satisfies(group: Union[Principal, Sequence[Principal], dict],
     if isinstance(criteria, dict):
         precondition(criteria, '"criteria" cannot be empty.')
         # Get a Whom object that we can test against.
-        to = criteria.get("criteria")
+        to = criteria.get("to")
         # Does the dict contain a Rule?
-        if criteria:
-            # If yes, just convert the .criteria property from it into a Whom.
-            criteria = Whom.from_dict(criteria)
+        if to:
+            # If yes, just convert the .to property from it into a Whom.
+            criteria = Whom.from_dict(to)
         else:
             # If not, convert the whole dict into a Whom.
             criteria = Whom.from_dict(criteria)

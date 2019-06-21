@@ -138,3 +138,9 @@ def test_complex_all_disjoint():
     assert satisfies(principals.objs + [Principal(roles=["investor"])], criteria)
     assert satisfies(principals.objs + [Principal(roles=["employee"])], criteria)
     assert satisfies(principals.objs + [Principal(roles=["employee", "investor"])], criteria)
+
+
+def test_satisfies_tolerates_dicts():
+    satisfies({"id": "Fred"}, whoms.bob)
+    satisfies(principals.bob, {"id": "Bob"})
+    satisfies(principals.bob, {"grant": "enter", "to": {"id": "Bob"}})

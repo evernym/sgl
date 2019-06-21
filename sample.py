@@ -1,12 +1,11 @@
-from sgl.rule import Rule
-from sgl.principal import Principal
 from sgl.api import satisfies
 
-my_rule = Rule.from_json('{"grant": ["enter_top_secret"], "to": { "role": "trusted" }}')
+my_rule = {"grant": ["enter_top_secret"], "to": { "role": "trusted" }}
 people = [
-    Principal.from_json('{"id": "Bob", "roles": ["employee"]}'),
-    Principal.from_json('{"id": "Alice", "roles": ["employee", "trusted"]}')
+    {"id": "Bob", "roles": ["employee"]},
+    {"id": "Alice", "roles": ["employee", "trusted"]}
 ]
 
 for person in people:
-    print(f"Welcome, {person.id}." if satisfies(person, my_rule) else f"Access denied, {person.id}.")
+    name = person['id']
+    print(f"Welcome, {name}." if satisfies(person, my_rule) else f"Access denied, {name}.")
