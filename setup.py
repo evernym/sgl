@@ -18,7 +18,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="sgl",
-    version="0.9",
+    version="0.9.1",
     description="Structured Grant Language",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -37,14 +37,11 @@ setup(
     ],
     packages=["sgl"],
     include_package_data=True,
-    package_data={
-        '': ['*.json'],
-    },
     install_requires=[],
     entry_points={
         "console_scripts": [
             "realpython=reader.__main__:main",
         ]
     },
-    download_url='https://github.com/dhh1128/sgl/archive/v0.9.tar.gz',
+    download_url='https://github.com/dhh1128/sgl/archive/v0.9.1.tar.gz',
 )

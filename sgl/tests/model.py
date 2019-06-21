@@ -7,7 +7,7 @@ def load_all():
     from ..rule import Rule
     from ..criterion import Criterion
 
-    model_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'model'))
+    model_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../model'))
 
     class DynLoad:
         def __init__(self, cls):
