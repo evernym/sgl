@@ -5,7 +5,7 @@ def load_all():
 
     from ..principal import Principal
     from ..rule import Rule
-    from ..whom import Whom
+    from ..criterion import Criterion
 
     model_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'model'))
 
@@ -18,6 +18,7 @@ def load_all():
     def load(which):
         x = DynLoad(which)
         cname = which.__name__.lower() + 's'
+        if cname == 'criterions': cname = 'criteria'
         folder = os.path.join(model_dir, cname)
         try:
             for fname in os.listdir(folder):
@@ -31,12 +32,12 @@ def load_all():
                 x.dicts.append(dict)
                 x.objs.append(obj)
         except:
-            print(f"Exception while loading {folder}/{fname}")
+            print(f"Exception while loading {folder}/{cname}")
             raise
         return x
 
-    return load(Principal), load(Whom), load(Rule)
+    return load(Principal), load(Criterion), load(Rule)
 
 
-principals, whoms, rules = load_all()
+principals, criteria, rules = load_all()
 del load_all

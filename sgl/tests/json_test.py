@@ -5,10 +5,10 @@ from ..dbc import PreconditionViolation
 from ..api import CustomJSONEncoder
 from ..principal import Principal
 from ..rule import Rule
-from ..whom import Whom
+from ..criterion import Criterion
 
 from .model import principals
-from .model import whoms
+from .model import criteria
 from .model import rules
 
 
@@ -68,55 +68,55 @@ def test_principal_custemencoder_roundtrip():
 
 def test_whom_empty_rejected():
     with pytest.raises(PreconditionViolation):
-        Whom()
+        Criterion()
     with pytest.raises(PreconditionViolation):
-        Whom(any={})
+        Criterion(any={})
     with pytest.raises(PreconditionViolation):
-        Whom(all={})
+        Criterion(all={})
     with pytest.raises(PreconditionViolation):
-        Whom(id='')
+        Criterion(id='')
 
 
 def test_whom_mutually_exclusive_rejected():
     with pytest.raises(PreconditionViolation):
-        Whom(id="a", role="b")
+        Criterion(id="a", role="b")
     with pytest.raises(PreconditionViolation):
-        Whom(role="b", any=[whoms.bob])
+        Criterion(role="b", any=[criteria.bob])
     with pytest.raises(PreconditionViolation):
-        Whom(any=[whoms.bob], all=[whoms.grandparent])
+        Criterion(any=[criteria.bob], all=[criteria.grandparent])
 
 
 def test_whom_id_must_be_str():
     with pytest.raises(PreconditionViolation):
-        Whom(id=1)
+        Criterion(id=1)
 
 
 # Required for forward compatibility
 def test_whom_ignores_extra_fields_in_dict():
-    assert Whom.from_dict({"id": "x", "a": 1, "b": 2.3, "c": [4, 5], "d": {}}) == Whom.from_dict({"id": "x"})
+    assert Criterion.from_dict({"id": "x", "a": 1, "b": 2.3, "c": [4, 5], "d": {}}) == Criterion.from_dict({"id": "x"})
 
 
 def test_whom_to_json_hardcoded():
-    assert whoms.bob.to_json() == '{"id": "Bob"}'
-    assert whoms.majority_tribal_council.to_json() == '{"n": 3, "role": "tribal_council"}'
+    assert criteria.bob.to_json() == '{"id": "Bob"}'
+    assert criteria.majority_tribal_council.to_json() == '{"n": 3, "role": "tribal_council"}'
 
 
 def test_whom_to_from_json_roundtrip():
-    run_to_from_json_roundtrip(whoms)
+    run_to_from_json_roundtrip(criteria)
 
 
 def test_whom_customencoder_roundtrip():
-    run_customencoder_roundtrip(whoms)
+    run_customencoder_roundtrip(criteria)
 
 
 def test_rule_rejects_empty_privs():
     with pytest.raises(PreconditionViolation):
-        Rule([], whoms.bob)
+        Rule([], criteria.bob)
 
 
 def test_rule_rejects_non_sequence_of_strs_privs():
     with pytest.raises(PreconditionViolation):
-        Rule("abc", whoms.bob)
+        Rule("abc", criteria.bob)
 
 
 # Required for forward compatibility

@@ -4,7 +4,7 @@ from typing import Sequence, Union, List, Set
 from .dbc import *
 from .principal import Principal
 from .rule import Rule
-from .whom import Whom
+from .criterion import Criterion
 
 
 class CustomJSONEncoder(json.JSONEncoder):
@@ -30,26 +30,26 @@ def _flatten_to_single_set(list_of_sets: List[set]) -> set:
     return flat
 
 
-def _get_min_group_size(criteria):
-    if criteria.id:
+def _get_min_group_size(criterion):
+    if criterion.id:
         return 1
-    elif criteria.role:
-        return criteria.n
-    elif criteria.any:
+    elif criterion.role:
+        return criterion.n
+    elif criterion.any:
         n = 1000000000
-        for c in criteria.any:
+        for c in criterion.any:
             m = _get_min_group_size(c)
             if m < n:
                 n = m
         return n
     else:
         n = 0
-        for c in criteria.all:
+        for c in criterion.all:
             n += _get_min_group_size(c)
         return n
 
 
-def _get_matching_minimal_subsets(group: Set[Principal], criterion: Whom) -> List[Set[Principal]]:
+def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -> List[Set[Principal]]:
     """
     Return a list of all minimal subsets of the group that match a criterion. "Minimal" means that
     any group members unnecessary to the match have been stripped out, though some matches may take
@@ -98,8 +98,8 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Whom) -> Lis
 
                 # Did we have any success on the first subcriterion?
                 if subsets:
-                    # Build a new Whom that represents all the subcriteria besides the first subcriterion.
-                    rest_of_subcriteria = Whom(all=criterion.all[1:]) if len(criterion.all) > 2 else criterion.all[1]
+                    # Build a new Criterion that represents all the subcriteria besides the first subcriterion.
+                    rest_of_subcriteria = Criterion(all=criterion.all[1:]) if len(criterion.all) > 2 else criterion.all[1]
 
                     # Optimization 2: figure out the minimum group size we need for the rest of the criteria.
                     # Use that to skip any calculations that are doomed to failure. Part 1:
@@ -131,7 +131,7 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Whom) -> Lis
                                 answer.append(_flatten_to_single_set(solution))
             else:
                 # This is a bit of an anomaly. None of criteria are set, so we don't have anything
-                # to evaluate. This shouldn't happen -- the constructor of Whom disallows it. But
+                # to evaluate. This shouldn't happen -- the constructor of Criterion disallows it. But
                 # if it *does* happen, drop through.
                 pass
 
@@ -141,7 +141,7 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Whom) -> Lis
 
 
 def satisfies(group: Union[Principal, Sequence[Principal], dict],
-              criteria: Union[Rule, Whom, dict], disjoint=True) -> bool:
+              criterion: Union[Rule, Criterion, dict], disjoint=True) -> bool:
     precondition(group, '"group" cannot be empty.')
     if isinstance(group, dict):
         group = [Principal.from_dict(group)]
@@ -150,66 +150,65 @@ def satisfies(group: Union[Principal, Sequence[Principal], dict],
     else:
         precondition_nonempty_sequence_of_x(group, "group", Principal)
     group = set(group)
-    if isinstance(criteria, dict):
-        precondition(criteria, '"criteria" cannot be empty.')
-        # Get a Whom object that we can test against.
-        to = criteria.get("to")
+    if isinstance(criterion, dict):
+        precondition(criterion, '"criterion" cannot be empty.')
+        # Get a Criterion object that we can test against.
+        to = criterion.get("to")
         # Does the dict contain a Rule?
         if to:
-            # If yes, just convert the .to property from it into a Whom.
-            criteria = Whom.from_dict(to)
+            # If yes, just convert the .to property from it into a Criterion.
+            criterion = Criterion.from_dict(to)
         else:
-            # If not, convert the whole dict into a Whom.
-            criteria = Whom.from_dict(criteria)
-    elif isinstance(criteria, Rule):
-        criteria = criteria.to
-    elif isinstance(criteria, Whom):
+            # If not, convert the whole dict into a Criterion.
+            criterion = Criterion.from_dict(criterion)
+    elif isinstance(criterion, Rule):
+        criterion = criterion.to
+    elif isinstance(criterion, Criterion):
         pass
     else:
-        raise PreconditionViolation('"criteria" must be a Rule, Whom, or non-empty dict.')
+        raise PreconditionViolation('"criterion" must be a Rule, Criterion, or non-empty dict.')
     # Now that we've checked all preconditions, call the internal function that does all the
     # work and that is recursive.
-    return _check_satisfies(group, criteria, disjoint)
+    return _check_satisfies(group, criterion, disjoint)
 
 
-def _check_satisfies(group: Set[Principal], criteria: Whom, disjoint) -> bool:
-    # If the criteria call for us to match by id, do so. Note that we do
+def _check_satisfies(group: Set[Principal], criterion: Criterion, disjoint) -> bool:
+    # If the criterion calls for us to match by id, do so. Note that we do
     # NOT need to also match by other characteristics; although a Principal can
     # have both an id and roles, criteria cannot use both at the same time.
-    if criteria.id:
+    if criterion.id:
         for p in group:
-            if p.id == criteria.id:
+            if p.id == criterion.id:
                 return True
-    # If we have to match by role, see if our set of group include enough
-    # that have the required role.
-    elif criteria.role:
-        n = criteria.n
+    # If we have to match by role, see if our group includes enough that have the
+    # required role.
+    elif criterion.role:
+        n = criterion.n
         for p in group:
-            if p.roles and (criteria.role in p.roles):
+            if p.roles and (criterion.role in p.roles):
                 n -= 1
                 if n == 0:
                     return True
     # If we are looking for a match against any one of several criteria,
-    # test each criterion individual, and return true if we find one
+    # test each criterion individually, and return true if we find one
     # that matches.
-    elif criteria.any:
-        for criterion in criteria.any:
+    elif criterion.any:
+        for criterion in criterion.any:
             if _check_satisfies(group, criterion, None):
                 return True
         return False
-    elif criteria.all:
+    elif criterion.all:
         # If we're doing all (boolean AND) and disjoint subsets, we have to calculate
-        # the actual subsets of the group that satisfy subsets of the criteria,
+        # the actual subsets of the group that satisfy subsets of the criterion,
         # before we can return True or False.
         if disjoint:
-            disjoint_subsets = _get_matching_minimal_subsets(group, criteria)
-            disjoint_subsets = bool(disjoint_subsets)
-            return disjoint_subsets
+            disjoint_subsets = _get_matching_minimal_subsets(group, criterion)
+            return bool(disjoint_subsets)
 
-        # This is much easier. Just see if all criteria are satisfied without checking to
+        # This is much easier. Just see if all criterion are satisfied without checking to
         # see if the subsets of group that satisfies each are disjoint.
         else:
-            for criterion in criteria.all:
+            for criterion in criterion.all:
                 if not _check_satisfies(group, criterion, False):
                     return False
             return True

@@ -5,9 +5,9 @@ from typing import Sequence
 from .dbc import *
 
 
-class Whom:
+class Criterion:
     def __init__(self, id: str = None, n: int = None, role: str = None,
-                 all: Sequence['Whom'] = None, any: Sequence['Whom'] = None):
+                 all: Sequence['Criterion'] = None, any: Sequence['Criterion'] = None):
         specified = [True for x in [id, role, all, any] if bool(x)]
         precondition(len(specified) == 1,
                      'the "id", "role", "all", and "any" parameters are mutually exclusive, and one must be specified.')
@@ -26,10 +26,10 @@ class Whom:
             precondition(isinstance(n, int) and n > 0, '"n" must be a positive integer.')
             self.n = n
         elif all:
-            precondition_nonempty_sequence_of_x(all, "all", Whom)
+            precondition_nonempty_sequence_of_x(all, "all", Criterion)
             self.all = all
         else: #if any:
-            precondition_nonempty_sequence_of_x(any, "any", Whom)
+            precondition_nonempty_sequence_of_x(any, "any", Criterion)
             self.any = any
 
     def __str__(self):
@@ -51,24 +51,24 @@ class Whom:
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_dict(cls, value: dict) -> 'Whom':
+    def from_dict(cls, value: dict) -> 'Criterion':
         precondition(isinstance(value, dict), '"value" must be a dict')
         all = value.get('all')
         if all:
-            all = [Whom.from_dict(x) for x in all]
+            all = [Criterion.from_dict(x) for x in all]
         any = value.get('any')
         if any:
-            any = [Whom.from_dict(x) for x in any]
-        return Whom(value.get('id'), value.get('n'), value.get('role'), all, any)
+            any = [Criterion.from_dict(x) for x in any]
+        return Criterion(value.get('id'), value.get('n'), value.get('role'), all, any)
 
     @classmethod
-    def from_json(cls, json_text: str) -> 'Whom':
+    def from_json(cls, json_text: str) -> 'Criterion':
         precondition(json_text, '"json_text" must be non-empty.')
         precondition_is_str(json_text, "json_text")
-        return Whom.from_dict(json.loads(json_text))
+        return Criterion.from_dict(json.loads(json_text))
 
     def __eq__(self, other):
-        if isinstance(other, Whom):
+        if isinstance(other, Criterion):
             return self.__dict__ == other.__dict__
         return NotImplemented
 
