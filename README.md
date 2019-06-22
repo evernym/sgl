@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/dhh1128/sgl.svg?style=svg)](
 https://circleci.com/gh/dhh1128/sgl)
 
-# SGL (Structured Grant Language)
+# SGL (Simple Grant Language)
 
 SGL is a simple but flexible JSON-based DSL for granting and testing
 permissions (authorization). You can use this language to write powerful
@@ -28,7 +28,10 @@ people = [
 
 for person in people:
     name = person['id']
-    print(f"Welcome, {name}." if satisfies(person, my_rule) else f"Access denied, {name}.")
+    if satisfies(person, my_rule):
+        print(f"Welcome, {name}."
+    else:
+        print(f"Access denied, {name}.")
 ```
 
 If you ran this code, you'd see:
