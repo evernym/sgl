@@ -4,17 +4,18 @@ https://circleci.com/gh/dhh1128/sgl)
 # SGL (Structured Grant Language)
 
 SGL is a simple but flexible JSON-based DSL for granting and testing
-permissions (authorization), and provides a reference implementation
-of that language in python. You can use this language for flexible rules
-about who can do what. For example, here's an SGL rule that expresses
-the idea that only people with "trusted" status should enter a
-top-secret area:
+permissions (authorization). You can use this language to write powerful
+but easy-to-read rules about who can do what, and then evaluate the
+rules to enforce business logic.
 
-![sample rule](collateral/sample_rule.png)
+For example, here's an SGL rule that expresses the idea that only people
+with "trusted" status should enter a top-secret area:
+
+![sample rule](https://github.com/dhh1128/sgl/blob/master/collateral/sample_rule.png)
 
 And here's how you might use that rule in code:
 
-[![sample code](collateral/sample_code.png)](sample_code.py)
+[![sample code](https://github.com/dhh1128/sgl/blob/master/collateral/sample_code.png)](sample_code.py)
 
 If you ran this code, you'd see:
 
