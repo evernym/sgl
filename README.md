@@ -47,3 +47,7 @@ you should be able to learn the whole language in 5 minutes. See the
 SGL is not integrated with any particular enforcement mechanism, because
 it's designed for problems where you have to do your own enforcement.
 Hooking it up to enforcement mechanisms is trivial, though.
+
+## See also
+* [Tutorial](docs/tutorial.md)
+* [Reference](docs/reference.md)

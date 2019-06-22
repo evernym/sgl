@@ -1,5 +1,6 @@
 # SGL
 ## Reference
+
 ### Structures
 
 #### Rule.`grant`
@@ -66,3 +67,7 @@ the `investor` privilege cooperate to exercise a privilege like
 `board_vote_of_no_confidence`, you don't want 2 employees who are also
 investors to satisfy both criteria; you want 4 people at a minimum.
 Setting `disjoint` to `False` allows the overlap.
+
+## See also
+* [Overview](../README.md)
+* [Tutorial](tutorial.md)
