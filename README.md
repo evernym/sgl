@@ -42,7 +42,7 @@ Welcome, Alice.
 SGL supports arbitrarily complex rules with boolean operators and
 requirements about multiple parties being jointly authorized. However,
 you should be able to learn the whole language in 5 minutes. See the
-[tutorial](tutorial.md).
+[tutorial](https://dhh1128.github.io/sgl/docs/tutorial.html).
 
 SGL is not integrated with any particular enforcement mechanism, because
 it's designed for problems where you have to do your own enforcement.

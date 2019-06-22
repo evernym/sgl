@@ -36,7 +36,7 @@ setup(
         "Development Status :: 4 - Beta"
     ],
     packages=["sgl"],
-    include_package_data=True,
+    #include_package_data=True,      -- write a MANIFEST.in with glob patterns if uncommented
     install_requires=[],
     entry_points={
         "console_scripts": [
