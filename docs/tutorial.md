@@ -73,7 +73,7 @@ def satisfies(group, criteria, disjoint=True) -> bool
 ```
 
 This tells whether a group satisfies the criteria embodied in a rule.
-See [Reference](reference.md) for an explanation of `disjoint`.
+See [Reference](reference.md#satisfies) for an explanation of `disjoint`.
 
 Here, `group` is one or more people--the set about which we want to 
 check privileges. The python implementation provides a `Principal` object
