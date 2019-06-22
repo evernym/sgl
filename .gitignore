@@ -110,3 +110,4 @@ drive_tests.py
 .DS_Store
 .bumpversion.cfg
 bumpv
+pubpypi
