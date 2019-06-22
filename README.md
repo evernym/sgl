@@ -11,11 +11,25 @@ rules to enforce business logic.
 For example, here's an SGL rule that expresses the idea that only people
 with "trusted" status should enter a top-secret area:
 
-![sample rule](https://github.com/dhh1128/sgl/blob/master/collateral/sample_rule.png)
+```JSON
+{"grant": ["enter_top_secret"], "to": { "role": "trusted" }}
+```
 
 And here's how you might use that rule in code:
 
-[![sample code](https://github.com/dhh1128/sgl/blob/master/collateral/sample_code.png)](sample_code.py)
+```python
+from sgl.api import satisfies
+
+my_rule = {"grant": ["enter_top_secret"], "to": { "role": "trusted" }}
+people = [
+    {"id": "Bob", "roles": ["employee"]},
+    {"id": "Alice", "roles": ["employee", "trusted"]}
+]
+
+for person in people:
+    name = person['id']
+    print(f"Welcome, {name}." if satisfies(person, my_rule) else f"Access denied, {name}.")
+```
 
 If you ran this code, you'd see:
 
