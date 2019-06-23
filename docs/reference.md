@@ -45,7 +45,7 @@ custom-properties.md).
 #### Principal.id
 Contains a string that uniquely identifies the principal. This might be
 an employee UUID, a customer email address, or a first name. The `id`
-field is optional and, when present, iw used to match against a [
+field is optional and, when present, is used to match against a [
 condition with id](#condition-with-id).
 
 #### Principal.roles
@@ -70,15 +70,25 @@ specific identifier:
 ```JSON
 {"id": "Fred"}
 ```
+
+Normally, conditions like this test for an `id` that __equals__ the
+specified value. However, other operators can be used instead. This
+allows tests such as `>`, `!=`, and `like` (regex). Conditions that
+evaluate custom scalar properties work the same way. See [Custom
+Properties](custom-properties.md) for more details. 
     
 #### Condition with roles
-This variant requires one or more principals to hold a role:
+This variant requires the specified value to be in the `roles` set
+belonging to one or more of the principals seeking a privilege:
  
 ```JSON
 {"n": 3, "roles": "friend"}
 ```
 
 The `n` field is optional. If omitted, `"n": 1` is assumed.
+
+Conditions that evaluate custom array/set properties work the same way.
+See [Custom Properties](custom-properties.md) for more details. 
     
 #### Condition with any
 This variant provides boolean OR features. It requires a match against
