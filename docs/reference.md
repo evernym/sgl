@@ -163,3 +163,4 @@ Setting `disjoint` to `False` allows the overlap.
 ## See also
 * [Overview](../README.md)
 * [Tutorial](tutorial.md)
+* [Renderings](renderings.md)

@@ -63,4 +63,4 @@ Hooking it up to enforcement mechanisms is trivial, though.
 
 ## See also
 * [Tutorial](https://dhh1128.github.io/sgl/docs/tutorial.html)
-* [Reference](https://dhh1128.github.io/sgl/docs/tutorial.html)
+* [Reference](https://dhh1128.github.io/sgl/docs/reference.html)
