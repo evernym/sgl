@@ -5,7 +5,7 @@ from ..dbc import PreconditionViolation
 from ..api import CustomJSONEncoder
 from ..principal import Principal
 from ..rule import Rule
-from ..criterion import Criterion
+from ..condition import Condition
 
 from .examples import *
 
@@ -52,69 +52,69 @@ def test_principal_ignores_extra_fields_in_dict():
 
 
 def test_principal_to_json_hardcoded():
-    assert principals.bob.to_json() == '{"id": "Bob"}'
-    assert principals.employee_and_investor.to_json() == '{"id": "12345", "roles": ["employee", "investor"]}'
+    assert p.bob.to_json() == '{"id": "Bob"}'
+    assert p.employee_and_investor.to_json() == '{"id": "12345", "roles": ["employee", "investor"]}'
 
 
 def test_principal_to_from_json_roundtrip():
-    run_to_from_json_roundtrip(principals)
+    run_to_from_json_roundtrip(p)
 
 
 def test_principal_custemencoder_roundtrip():
-    run_customencoder_roundtrip(principals)
+    run_customencoder_roundtrip(p)
 
 
 def test_whom_empty_rejected():
     with pytest.raises(PreconditionViolation):
-        Criterion()
+        Condition()
     with pytest.raises(PreconditionViolation):
-        Criterion(any={})
+        Condition(any={})
     with pytest.raises(PreconditionViolation):
-        Criterion(all={})
+        Condition(all={})
     with pytest.raises(PreconditionViolation):
-        Criterion(id='')
+        Condition(id='')
 
 
 def test_whom_mutually_exclusive_rejected():
     with pytest.raises(PreconditionViolation):
-        Criterion(id="a", role="b")
+        Condition(id="a", role="b")
     with pytest.raises(PreconditionViolation):
-        Criterion(role="b", any=[criteria.bob])
+        Condition(role="b", any=[c.bob])
     with pytest.raises(PreconditionViolation):
-        Criterion(any=[criteria.bob], all=[criteria.grandparent])
+        Condition(any=[c.bob], all=[c.grandparent])
 
 
 def test_whom_id_must_be_str():
     with pytest.raises(PreconditionViolation):
-        Criterion(id=1)
+        Condition(id=1)
 
 
 # Required for forward compatibility
 def test_whom_ignores_extra_fields_in_dict():
-    assert Criterion.from_dict({"id": "x", "a": 1, "b": 2.3, "c": [4, 5], "d": {}}) == Criterion.from_dict({"id": "x"})
+    assert Condition.from_dict({"id": "x", "a": 1, "b": 2.3, "c": [4, 5], "d": {}}) == Condition.from_dict({"id": "x"})
 
 
 def test_whom_to_json_hardcoded():
-    assert criteria.bob.to_json() == '{"id": "Bob"}'
-    assert criteria.majority_tribal_council.to_json() == '{"n": 3, "role": "tribal_council"}'
+    assert c.bob.to_json() == '{"id": "Bob"}'
+    assert c.majority_tribal_council.to_json() == '{"n": 3, "role": "tribal_council"}'
 
 
 def test_whom_to_from_json_roundtrip():
-    run_to_from_json_roundtrip(criteria)
+    run_to_from_json_roundtrip(c)
 
 
 def test_whom_customencoder_roundtrip():
-    run_customencoder_roundtrip(criteria)
+    run_customencoder_roundtrip(c)
 
 
 def test_rule_rejects_empty_privs():
     with pytest.raises(PreconditionViolation):
-        Rule([], criteria.bob)
+        Rule([], c.bob)
 
 
 def test_rule_rejects_non_sequence_of_strs_privs():
     with pytest.raises(PreconditionViolation):
-        Rule("abc", criteria.bob)
+        Rule("abc", c.bob)
 
 
 # Required for forward compatibility
@@ -124,14 +124,14 @@ def test_rule_ignores_extra_fields_in_dict():
 
 
 def test_rule_to_json_hardcoded():
-    assert rules.enter_to_bob.to_json() == '{"grant": ["enter"], "to": {"id": "Bob"}}'
-    assert rules.rations_to_grandparent_and_sibling.to_json() == \
+    assert r.enter_to_bob.to_json() == '{"grant": ["enter"], "to": {"id": "Bob"}}'
+    assert r.rations_to_grandparent_and_sibling.to_json() == \
            '{"grant": ["rations"], "to": {"all": [{"role": "grandparent"}, {"role": "sibling"}]}}'
 
 
 def test_rule_to_from_json_roundtrip():
-    run_to_from_json_roundtrip(rules)
+    run_to_from_json_roundtrip(r)
 
 
 def test_rule_custemencoder_roundtrip():
-    run_customencoder_roundtrip(rules)
+    run_customencoder_roundtrip(r)

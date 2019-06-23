@@ -5,7 +5,7 @@ def load_all():
 
     from ..principal import Principal
     from ..rule import Rule
-    from ..criterion import Criterion
+    from ..condition import Condition
 
     examples_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../examples'))
 
@@ -18,7 +18,7 @@ def load_all():
     def load(which):
         x = DynLoad(which)
         cname = which.__name__.lower() + 's'
-        if cname == 'criterions': cname = 'criteria'
+        if cname == 'criterions': cname = 'condition'
         folder = os.path.join(examples_dir, cname)
         try:
             for fname in os.listdir(folder):
@@ -36,8 +36,8 @@ def load_all():
             raise
         return x
 
-    return load(Principal), load(Criterion), load(Rule)
+    return load(Principal), load(Condition), load(Rule)
 
 
-principals, criteria, rules = load_all()
+p, c, r = load_all()
 del load_all

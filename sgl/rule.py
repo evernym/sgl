@@ -2,19 +2,19 @@ import json
 from typing import Sequence
 
 from .dbc import *
-from .criterion import Criterion
+from .condition import Condition
 
 
 class Rule:
-    def __init__(self, privs: Sequence[str], to: Criterion):
+    def __init__(self, privs: Sequence[str], to: Condition):
         precondition_nonempty_sequence_of_str(privs, "privs")
         self.privs = sorted(set(privs))
         if isinstance(to, dict):
-            self.to = Criterion.from_dict(to)
-        elif isinstance(to, Criterion):
+            self.to = Condition.from_dict(to)
+        elif isinstance(to, Condition):
             self.to = to
         else:
-            raise PreconditionViolation('"to" must be a Criterion or dict.')
+            raise PreconditionViolation('"to" must be a Condition or dict.')
 
     def __str__(self):
         return self.to_json()

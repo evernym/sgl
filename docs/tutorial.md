@@ -1,7 +1,7 @@
 # SGL Tutorial
 
 SGL __rules__ grant __privileges__ to __principals__ (people, devices,
-software packages, or other entities) that match __criteria__.
+software packages, or other entities) if they satisfy __conditions__.
 
 
 ### General Pattern
@@ -9,7 +9,7 @@ software packages, or other entities) that match __criteria__.
 To use SGL, follow this pattern:
 
 1. Name the privileges that are relevant to your problem domain.
-2. Choose criteria that govern how the privileges apply to your use
+2. Choose conditions that govern how the privileges apply to your use
 cases.
 3. Write rules that express your decisions.
 4. Assign properties to the principals that need privileges.
@@ -34,7 +34,7 @@ have:
 * __rations__: Receive food, hygiene items, clothing, and other materials allocated to the dependent.
 * __travel__: Take the dependent outside the camp.
 
-#### Step 2: choose criteria
+#### Step 2: choose conditions
 
 In step 2, you might come up with the following guidelines about how
 privileges should work:
@@ -90,7 +90,7 @@ You could turn these decisions into 3 SGL rules, which, in the JSON
 #### Step 4: assign properties
 
 So far we've decided that grandparents and siblings have certain
-privileges, but just who are the grandparents and siblings of a given
+privileges--but just who __are__ the grandparents and siblings of a given
 orphan? In other words, what do we know about all the principals in the
 system?
 
@@ -130,7 +130,7 @@ if satisfies(group, travel_rule, disjoint=True):
 ```
 
 If the list were identical to the one in step 4, `satisfies()` would
-return `False`, because the criterion of (2\*grandparent or
+return `False`, because the condition of (2\*grandparent or
 (1\*grandparent + 3\*tribal_council)) is not satisfied by the group.
 (The `disjoint=True` arg prevents Amena from using both of her roles in
 the same rule; if she wants to claim to be a grandparent, then she can't
@@ -141,7 +141,7 @@ and that person were either a tribal council member or the child's
 grandparent, then `satisfies()` would return `True`.
 
 All of the ingredients used by SGL--rules, privileges, principals, and
-criteria--can be much fancier than what's shown in this simple example. 
+condition--can be much fancier than what's shown in this simple example. 
 
 ## See also
 * [Overview](../README.md)

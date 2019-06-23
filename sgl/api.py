@@ -4,7 +4,7 @@ from typing import Sequence, Union, List, Set
 from .dbc import *
 from .principal import Principal
 from .rule import Rule
-from .criterion import Criterion
+from .condition import Condition
 
 
 class CustomJSONEncoder(json.JSONEncoder):
@@ -30,31 +30,31 @@ def _flatten_to_single_set(list_of_sets: List[set]) -> set:
     return flat
 
 
-def _get_min_group_size(criterion):
-    if criterion.id:
+def _get_min_group_size(cond):
+    if cond.id:
         return 1
-    elif criterion.role:
-        return criterion.n
-    elif criterion.any:
+    elif cond.role:
+        return cond.n
+    elif cond.any:
         n = 1000000000
-        for c in criterion.any:
+        for c in cond.any:
             m = _get_min_group_size(c)
             if m < n:
                 n = m
         return n
     else:
         n = 0
-        for c in criterion.all:
+        for c in cond.all:
             n += _get_min_group_size(c)
         return n
 
 
-def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -> List[Set[Principal]]:
+def _get_matching_minimal_subsets(group: Set[Principal], cond: Condition) -> List[Set[Principal]]:
     """
-    Return a list of all minimal subsets of the group that match a criterion. "Minimal" means that
+    Return a list of all minimal subsets of the group that match a condition. "Minimal" means that
     any group members unnecessary to the match have been stripped out, though some matches may take
     more principals than others. This is useful when we're trying to find disjoint combinations of
-    unique individuals that match multiple criteria.
+    unique individuals that match multiple condition.
 
     Note: semantically, this function deals with sets of sets, not lists of sets. However, it takes
     and returns a *list* of sets to avoid doing extra coding work to enforce uniqueness of the
@@ -62,27 +62,27 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
     need the set datatype to do it for us as well.)
     """
     answer = []
-    if group and criterion:
-        if criterion.id:
+    if group and cond:
+        if cond.id:
             for p in group:
-                if p.id == criterion.id:
+                if p.id == cond.id:
                     answer.append({p})
-        elif criterion.role:
+        elif cond.role:
             with_role = []
             for p in group:
-                if p.roles and (criterion.role in p.roles):
+                if p.roles and (cond.role in p.roles):
                     with_role.append(p)
-            answer = [set(uc) for uc in _unique_combinations(with_role, criterion.n)]
+            answer = [set(uc) for uc in _unique_combinations(with_role, cond.n)]
         else:
-            if criterion.any:
+            if cond.any:
                 matches = []
-                for subcriterion in criterion.any:
+                for subcriterion in cond.any:
                     subsets = _get_matching_minimal_subsets(group, subcriterion)
                     if subsets:
                         subset_for_this_criterion = _flatten_to_single_set(subsets)
                         matches.append(subset_for_this_criterion)
                 if matches:
-                    if criterion.n == 1:
+                    if cond.n == 1:
                         answer = matches
                     else:
                         # Some of the logic that builds sets can't use lists or sets as
@@ -94,7 +94,7 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
                             def __hash__(self):
                                 return id(self)
                         list_of_lists_of_hashable_set = _unique_combinations(
-                                [HashableSet(m) for m in matches], criterion.n)
+                                [HashableSet(m) for m in matches], cond.n)
                         if list_of_lists_of_hashable_set:
                             # We have to merge the inner lists of sets, so we end up with
                             # a single list of sets.
@@ -102,9 +102,9 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
                                 list_of_sets = [item.set for item in what_should_be_flat_list]
                                 answer.append(_flatten_to_single_set(list_of_sets))
 
-            elif criterion.all:
-                first_subcriterion = criterion.all[0]
-                # The computation that follows is expensive -- up to factorial with the number of criteria inside
+            elif cond.all:
+                first_subcriterion = cond.all[0]
+                # The computation that follows is expensive -- up to factorial with the number of condition inside
                 # the tree beneath the "all" expression, and possibly a few levels of recursion. Do some simple
                 # optimizations. These may not actually speed up the code that much, most of the time. However,
                 # they should avoid going through complex codepaths when simple logic will suffice, which should
@@ -114,15 +114,15 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
                 subsets = _get_matching_minimal_subsets(group, first_subcriterion)
 
                 # Optimization 1: skip rest of algorithm if we only have a list of 1.
-                if len(criterion.all) == 1:
+                if len(cond.all) == 1:
                     return subsets
 
                 # Did we have any success on the first subcriterion?
                 if subsets:
-                    # Build a new Criterion that represents all the subcriteria besides the first subcriterion.
-                    rest_of_subcriteria = Criterion(all=criterion.all[1:]) if len(criterion.all) > 2 else criterion.all[1]
+                    # Build a new Condition that represents all the subcriteria besides the first subcriterion.
+                    rest_of_subcriteria = Condition(all=cond.all[1:]) if len(cond.all) > 2 else cond.all[1]
 
-                    # Optimization 2: figure out the minimum group size we need for the rest of the criteria.
+                    # Optimization 2: figure out the minimum group size we need for the rest of the condition.
                     # Use that to skip any calculations that are doomed to failure. Part 1:
                     min_group_remainder_size = _get_min_group_size(rest_of_subcriteria)
                     group_len = len(group)
@@ -151,8 +151,8 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
                                 solution = [x.union(subset) for x in subsets_for_remainder]
                                 answer.append(_flatten_to_single_set(solution))
             else:
-                # This is a bit of an anomaly. None of criteria are set, so we don't have anything
-                # to evaluate. This shouldn't happen -- the constructor of Criterion disallows it. But
+                # This is a bit of an anomaly. None of condition are set, so we don't have anything
+                # to evaluate. This shouldn't happen -- the constructor of Condition disallows it. But
                 # if it *does* happen, drop through.
                 pass
 
@@ -162,7 +162,7 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
 
 
 def satisfies(group: Union[Principal, Sequence[Principal], dict],
-              criterion: Union[Rule, Criterion, dict], disjoint=True) -> bool:
+              cond: Union[Rule, Condition, dict], disjoint=True) -> bool:
     precondition(group, '"group" cannot be empty.')
     if isinstance(group, dict):
         group = [Principal.from_dict(group)]
@@ -171,69 +171,69 @@ def satisfies(group: Union[Principal, Sequence[Principal], dict],
     else:
         precondition_nonempty_sequence_of_x(group, "group", Principal)
     group = set(group)
-    if isinstance(criterion, dict):
-        precondition(criterion, '"criterion" cannot be empty.')
-        # Get a Criterion object that we can test against.
-        to = criterion.get("to")
+    if isinstance(cond, dict):
+        precondition(cond, '"cond" cannot be empty.')
+        # Get a Condition object that we can test against.
+        to = cond.get("to")
         # Does the dict contain a Rule?
         if to:
-            # If yes, just convert the .to property from it into a Criterion.
-            criterion = Criterion.from_dict(to)
+            # If yes, just convert the .to property from it into a Condition.
+            cond = Condition.from_dict(to)
         else:
-            # If not, convert the whole dict into a Criterion.
-            criterion = Criterion.from_dict(criterion)
-    elif isinstance(criterion, Rule):
-        criterion = criterion.to
-    elif isinstance(criterion, Criterion):
+            # If not, convert the whole dict into a Condition.
+            cond = Condition.from_dict(cond)
+    elif isinstance(cond, Rule):
+        cond = cond.to
+    elif isinstance(cond, Condition):
         pass
     else:
-        raise PreconditionViolation('"criterion" must be a Rule, Criterion, or non-empty dict.')
+        raise PreconditionViolation('"cond" must be a Rule, Condition, or non-empty dict.')
     # Now that we've checked all preconditions, call the internal function that does all the
     # work and that is recursive.
-    return _check_satisfies(group, criterion, disjoint)
+    return _check_satisfies(group, cond, disjoint)
 
 
-def _check_satisfies(group: Set[Principal], criterion: Criterion, disjoint) -> bool:
-    # If the criterion calls for us to match by id, do so. Note that we do
+def _check_satisfies(group: Set[Principal], cond: Condition, disjoint) -> bool:
+    # If the cond calls for us to match by id, do so. Note that we do
     # NOT need to also match by other characteristics; although a Principal can
-    # have both an id and roles, criteria cannot use both at the same time.
-    if criterion.id:
+    # have both an id and roles, condition cannot use both at the same time.
+    if cond.id:
         for p in group:
-            if p.id == criterion.id:
+            if p.id == cond.id:
                 return True
     # If we have to match by role, see if our group includes enough that have the
     # required role.
-    elif criterion.role:
-        n = criterion.n
+    elif cond.role:
+        n = cond.n
         for p in group:
-            if p.roles and (criterion.role in p.roles):
+            if p.roles and (cond.role in p.roles):
                 n -= 1
                 if n == 0:
                     return True
-    # If we are looking for a match against any one of several criteria,
-    # test each criterion individually, and return true if we find one
+    # If we are looking for a match against any one of several condition,
+    # test each cond individually, and return true if we find one
     # (or, for n > 1, n) match(es).
-    elif criterion.any:
-        n = criterion.n if criterion.n else 1
-        for criterion in criterion.any:
-            if _check_satisfies(group, criterion, None):
+    elif cond.any:
+        n = cond.n if cond.n else 1
+        for cond in cond.any:
+            if _check_satisfies(group, cond, None):
                 n -= 1
                 if n == 0:
                     return True
         return False
-    elif criterion.all:
+    elif cond.all:
         # If we're doing all (boolean AND) and disjoint subsets, we have to calculate
-        # the actual subsets of the group that satisfy subsets of the criterion,
+        # the actual subsets of the group that satisfy subsets of the cond,
         # before we can return True or False.
         if disjoint:
-            disjoint_subsets = _get_matching_minimal_subsets(group, criterion)
+            disjoint_subsets = _get_matching_minimal_subsets(group, cond)
             return bool(disjoint_subsets)
 
-        # This is much easier. Just see if all criterion are satisfied without checking to
+        # This is much easier. Just see if all cond are satisfied without checking to
         # see if the subsets of group that satisfies each are disjoint.
         else:
-            for criterion in criterion.all:
-                if not _check_satisfies(group, criterion, False):
+            for cond in cond.all:
+                if not _check_satisfies(group, cond, False):
                     return False
             return True
     return False

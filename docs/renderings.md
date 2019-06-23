@@ -7,7 +7,7 @@ is JSON-centric.
 ### JSON
 
 The default and recommended rendering is JSON. In this rendering, each
-object ([rule](reference.md#rules), [criterion](reference.md#criterion),
+object ([rule](reference.md#rules), [condition](reference.md#condition),
 and [principal](reference.md#principal) is a JSON object -- `{...}`. 
 Sets are JSON arrays -- `[...]`.
 
