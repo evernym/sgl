@@ -1,8 +1,7 @@
 ## Tutorial
 
 SGL __rules__ grant __privileges__ to __principals__ (people, devices,
-software packages, AIs, or other entities) that match 
-__criteria__.
+software packages, or other entities) that match __criteria__.
 
 
 ### General Pattern
@@ -22,8 +21,8 @@ APIs to make decisions.
 Suppose you are building software that enforces guardianship procedures
 for orphan children in a refugee camp (one of the use cases for which
 SGL was developed). You need something a bit fancier that just "X is the
-guardian of Y" -- an older sibling might have limited guardianship
-privileges, a grandparent others, etc.
+guardian of Y" -- an older sibling might have a few guardianship
+privileges, a grandparent more, etc.
 
 #### Step 1: name privileges
 
@@ -49,13 +48,8 @@ approve travel outside the camp.
 
 #### Step 3: write rules
 
-You could turn these decisions into 3 SGL rules, as follows:
-
->Note: SGL can be rendered in various styles. This tutorial assumes the
-recommended JSON rendering, since JSON is familiar, broadly supported,
-and easy to read. For information about SGL in ProtoBuf, MsgPack, CBOR,
-or other styles, see [Other Renderings](other-renderings.md).
-
+You could turn these decisions into 3 SGL rules, which, in the JSON
+[rendering style](renderings.md), look like:
 
 ```JSON
 {
@@ -96,18 +90,19 @@ or other styles, see [Other Renderings](other-renderings.md).
 #### Step 4: assign properties
 
 So far we've decided that grandparents and siblings have certain
-privileges, but who are the grandparents and siblings of a given orphan?
-In other words, what do we know about all the principals in the system?
+privileges, but just who are the grandparents and siblings of a given
+orphan? In other words, what do we know about all the principals in the
+system?
 
-Here is where you answer that question. You can store your answers in any
+Now is when you answer that question. You can store your answers in any
 way you like: by issuing [verifiable credentials](
 https://w3c.github.io/vc-data-model/), by adding custom properties in
 LDAP, by creating a database of people and their relationships, etc.
 
 However, in the next step, we have to call SGL APIs. These require that
-knowledge about principals be expressed in a standard format (an SGL
-Principal object). Therefore, whatever storage mechanism you pick, you
-must be able to produce data like this:
+knowledge about principals be expressed in a standard format (one or
+more SGL 'Principal' objects). Therefore, whatever storage mechanism you
+pick, you must be able to produce data like this:
 
 ```JSON
 [
@@ -124,8 +119,10 @@ must be able to produce data like this:
 Now, when a group of adults shows up at the camp gate with an orphan
 in tow, and asks to travel with the child, you can use SGL to decide if
 they're authorized, or if their request should be denied. To do this,
-you build a list of data items like the one shown in step 4, describing
-the group. Then you call the SGL `satisfies()` API:
+you identify the orphan, then look through your stored data to see who
+has particular roles with respect to her. You build a list of data items
+like the one shown in step 4, describing all the principals in the group.
+Then you call SGL's `satisfies()` API:
 
 ```python
 if satisfies(group, travel_rule, disjoint=True):
@@ -134,26 +131,14 @@ if satisfies(group, travel_rule, disjoint=True):
 
 If the list were identical to the one in step 4, `satisfies()` would
 return `False`, because the criterion of (2\*grandparent or
-(1\*grandparent + 3\*tribal_council)) is not satisfied by the group. (The `disjoint=True`
-arg prevents Amena from using both of her roles in the same rule; if
-she wants to claim to be a grandparent, then she can't vote as a tribal
-council member, and vice versa.)
+(1\*grandparent + 3\*tribal_council)) is not satisfied by the group.
+(The `disjoint=True` arg prevents Amena from using both of her roles in
+the same rule; if she wants to claim to be a grandparent, then she can't
+vote as a tribal council member, and vice versa.)
 
 If `disjoint` were set to `False`, or if a new adult joined the group,
-and that person had data of either:
-
-```JSON
-{ "id": "Elias", "roles": ["tribal_council"]}
-```
-
-...or:
-
-```JSON
-{ "id": "Elias", "roles": ["grandparent"]}
-```
-
-...(or, if Elias, like Amena, had both the `tribal_council` and the
-`grandparent` roles), then `satisfies()` would return `True`.
+and that person were either a tribal council member or the child's
+grandparent, then `satisfies()` would return `True`.
 
 All of the ingredients used by SGL--rules, privileges, principals, and
 criteria--can be much fancier than what's shown in this simple example. 
@@ -161,3 +146,4 @@ criteria--can be much fancier than what's shown in this simple example.
 ## See also
 * [Overview](../README.md)
 * [Reference](reference.md)
+* [Renderings](renderings.md)

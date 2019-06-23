@@ -51,11 +51,11 @@ as rules that require multiple people to jointly exercise a privilege.
 However, you should be able to learn the whole language in 10 minutes.
 See the [tutorial](https://dhh1128.github.io/sgl/docs/tutorial.html).
 
->Note: SGL can be rendered in various styles. The docs generally use the
-recommended JSON rendering, since JSON is familiar, broadly supported,
-and easy to read. For information about SGL in ProtoBuf, MsgPack, CBOR,
-or other styles, see [Other Renderings](
-https://dhh1128.github.io/sgl/docs/other-renderings.html).
+>Note: SGL can be [rendered in various styles](
+https://dhh1128.github.io/sgl/docs/renderings.html). The example above
+uses the recommended JSON rendering, since JSON is familiar, broadly
+supported, and easy to read. Other possibilities include ProtoBuf,
+MsgPack, CBOR, and human-friendly text.
 
 SGL is not integrated with any particular enforcement mechanism, because
 it's designed for problems where you have to do your own enforcement.
