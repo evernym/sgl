@@ -6,13 +6,16 @@ sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), '..'
 
 from sgl.api import satisfies
 
-my_rule = {"grant": ["enter_top_secret"], "to": { "role": "trusted" }}
+my_rule = {"grant": ["backstage"], "to": { "role": "press" }}
+
 people = [
-    {"id": "Bob", "roles": ["employee"]},
-    {"id": "Alice", "roles": ["employee", "trusted"]}
+    {"id": "Alex", "roles": ["ticket-holder"]},
+    {"id": "Sofia", "roles": ["ticket-holder", "premium"]}
 ]
 
 for person in people:
     name = person['id']
-    print(f"Welcome, {name}." if satisfies(person, my_rule) else f"Access denied, {name}.")
-
+    if satisfies(person, my_rule):
+        print(f"Welcome backstage, {name}.")
+    else:
+        print(f"Sorry, this area is restricted, {name}.")

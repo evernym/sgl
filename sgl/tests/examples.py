@@ -7,7 +7,7 @@ def load_all():
     from ..rule import Rule
     from ..criterion import Criterion
 
-    model_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../model'))
+    examples_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../examples'))
 
     class DynLoad:
         def __init__(self, cls):
@@ -19,7 +19,7 @@ def load_all():
         x = DynLoad(which)
         cname = which.__name__.lower() + 's'
         if cname == 'criterions': cname = 'criteria'
-        folder = os.path.join(model_dir, cname)
+        folder = os.path.join(examples_dir, cname)
         try:
             for fname in os.listdir(folder):
                 name = fname[:-5]

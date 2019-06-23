@@ -19,7 +19,7 @@ README = (HERE / "README.md").read_text()
 setup(
     name="sgl",
     version="0.9.11",
-    description="Structured Grant Language",
+    description="Simple Grant Language",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/dhh1128/sgl",

@@ -7,9 +7,7 @@ from ..principal import Principal
 from ..rule import Rule
 from ..criterion import Criterion
 
-from .model import principals
-from .model import criteria
-from .model import rules
+from .examples import *
 
 
 def run_to_from_json_roundtrip(dynload):

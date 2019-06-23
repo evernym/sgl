@@ -1,7 +1,7 @@
 import pytest
 
 from ..api import *
-from .model import *
+from .examples import *
 
 
 def test_bob_satisfies_id_bob():
@@ -116,6 +116,14 @@ def test_easiest_all_disjoint():
     # we're asking for two employees and two investors -- and what we have is one
     # employee, one investor, and one employee+investor.
     assert not satisfies(principals.objs, c)
+
+
+def test_without_disjoint_3_satisfies_2_plus_2():
+    c = Criterion(all=[
+        Criterion(n=2, role="employee"),
+        Criterion(n=2, role="investor"),
+    ])
+    assert satisfies(principals.objs, c, disjoint=False)
 
 
 def test_complex_all_disjoint():
