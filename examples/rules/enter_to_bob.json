@@ -1,4 +1,4 @@
 {
   "grant": ["enter"],
-  "to": { "id": "Bob" }
+  "when": { "id": "Bob" }
 }

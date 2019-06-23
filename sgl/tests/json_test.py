@@ -119,14 +119,14 @@ def test_rule_rejects_non_sequence_of_strs_privs():
 
 # Required for forward compatibility
 def test_rule_ignores_extra_fields_in_dict():
-    assert Rule.from_dict({"grant": ["x"], "to": {"id": "y"}, "a": 1, "b": 2.3, "c": [4, 5], "d": {}}) \
-           == Rule.from_dict({"grant": ["x"], "to": {"id": "y"}})
+    assert Rule.from_dict({"grant": ["x"], "when": {"id": "y"}, "a": 1, "b": 2.3, "c": [4, 5], "d": {}}) \
+           == Rule.from_dict({"grant": ["x"], "when": {"id": "y"}})
 
 
 def test_rule_to_json_hardcoded():
-    assert r.enter_to_bob.to_json() == '{"grant": ["enter"], "to": {"id": "Bob"}}'
+    assert r.enter_to_bob.to_json() == '{"grant": ["enter"], "when": {"id": "Bob"}}'
     assert r.rations_to_grandparent_and_sibling.to_json() == \
-           '{"grant": ["rations"], "to": {"all": [{"role": "grandparent"}, {"role": "sibling"}]}}'
+           '{"grant": ["rations"], "when": {"all": [{"role": "grandparent"}, {"role": "sibling"}]}}'
 
 
 def test_rule_to_from_json_roundtrip():

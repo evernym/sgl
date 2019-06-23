@@ -1,6 +1,6 @@
 {
   "grant": ["travel", "appoint"],
-  "to": {
+  "when": {
     "any": [
       {"n": 2, "role": "grandparent"},
       {

@@ -11,19 +11,20 @@ another rendering if that is of interest to you.
 A __rule__ is an object in the form:
 
 ```JSON
-{"id": x, "grant": privileges, "to": condition}
+{"grant": privileges, "when": condition}
 ```
 
 #### Rule.id
-This field is optional and often omitted. If present, it provides a
-convenient identifier that can be used to refer to the rule.
+This field is optional and often omitted -- hence it is not shown in the
+example above. If present, it provides a convenient identifier that can
+be used to refer to the rule. It is not used by SGL processing.
 
 #### Rule.grant
 Contains a set of strings that name privileges meaningful in your
 problem domain. For more on semantics, see [Privileges](#privileges)
 below.
 
-#### Rule.to
+#### Rule.when
 Contains a [condition](#condition).
  
 ### Privileges
@@ -35,7 +36,7 @@ recommended for maximum interoperability. Privileges are compared
 case-sensitive. Order doesn't matter, and duplicates are removed.
 
 ### Condition
-A __criterion__ defines who gets the privileges listed in a [rule](
+A __condition__ defines who gets the privileges listed in a [rule](
 #rules).
 
 There are 4 variants of condition. The variants cannot be combined (e.g.,

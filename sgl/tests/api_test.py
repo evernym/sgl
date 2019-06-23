@@ -154,7 +154,7 @@ def test_complex_all_disjoint():
 def test_satisfies_tolerates_dicts():
     satisfies({"id": "Fred"}, c.bob)
     satisfies(p.bob, {"id": "Bob"})
-    satisfies(p.bob, {"grant": "enter", "to": {"id": "Bob"}})
+    satisfies(p.bob, {"grant": "enter", "when": {"id": "Bob"}})
 
 
 def donttest_any_with_n_3():

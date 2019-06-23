@@ -6,21 +6,21 @@ from .condition import Condition
 
 
 class Rule:
-    def __init__(self, privs: Sequence[str], to: Condition):
+    def __init__(self, privs: Sequence[str], when: Condition):
         precondition_nonempty_sequence_of_str(privs, "privs")
         self.privs = sorted(set(privs))
-        if isinstance(to, dict):
-            self.to = Condition.from_dict(to)
-        elif isinstance(to, Condition):
-            self.to = to
+        if isinstance(when, dict):
+            self.when = Condition.from_dict(when)
+        elif isinstance(when, Condition):
+            self.when = when
         else:
-            raise PreconditionViolation('"to" must be a Condition or dict.')
+            raise PreconditionViolation('"when" must be a Condition or dict.')
 
     def __str__(self):
         return self.to_json()
 
     def to_dict(self):
-        return {"grant": self.privs, "to": self.to.to_dict()}
+        return {"grant": self.privs, "when": self.when.to_dict()}
 
     def to_json(self) -> str:
         return json.dumps(self.to_dict())
@@ -28,7 +28,7 @@ class Rule:
     @classmethod
     def from_dict(cls, value: dict) -> 'Rule':
         precondition(isinstance(value, dict), '"value" must be a dict')
-        return Rule(value.get('grant'), value.get('to'))
+        return Rule(value.get("grant"), value.get("when"))
 
     @classmethod
     def from_json(cls, json_text: str) -> 'Rule':

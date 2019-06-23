@@ -41,7 +41,7 @@ Grant priv8 if all of (subcriterion6; subcriterion7).
 
 Note the capital letter on "Grant", the period at the end of each
 rule/sentence, and the semicolons that separate subcriteria. The words
-"Grant", "if", "is", "of", "any" and "all" function like reserved words
+"Grant", "when", "is", "of", "any" and "all" function like reserved words
 in the syntax. Note that only `id` is quoted; because names of priviliges
 and roles are tokens without whitespace, no quotes are needed or allowed
 around these.

@@ -174,16 +174,16 @@ def satisfies(group: Union[Principal, Sequence[Principal], dict],
     if isinstance(cond, dict):
         precondition(cond, '"cond" cannot be empty.')
         # Get a Condition object that we can test against.
-        to = cond.get("to")
+        to = cond.get("when")
         # Does the dict contain a Rule?
         if to:
-            # If yes, just convert the .to property from it into a Condition.
+            # If yes, just convert the .when property from it into a Condition.
             cond = Condition.from_dict(to)
         else:
             # If not, convert the whole dict into a Condition.
             cond = Condition.from_dict(cond)
     elif isinstance(cond, Rule):
-        cond = cond.to
+        cond = cond.when
     elif isinstance(cond, Condition):
         pass
     else:
