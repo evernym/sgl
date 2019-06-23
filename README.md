@@ -5,10 +5,10 @@ https://circleci.com/gh/dhh1128/sgl)
 
 SGL is a simple but flexible [DSL](
 https://en.wikipedia.org/wiki/Domain-specific_language) for granting and
-testing privileges (authorization). You can use this language to write
-powerful but easy-to-read rules about who should be able to do what, and
-then to match people against the rules to enforce business logic. Among
-other things, this lets you create custom [Role-Based Access Control](
+testing privileges (authorization). You can use it to write rules about
+who should be able to do what, and then to compare people to the rules
+to enforce business logic. Among other things, this lets you create
+custom [Role-Based Access Control](
 https://en.wikipedia.org/wiki/Role-based_access_control) mechanisms.
 
 For example, here's an SGL rule that says only members of the press
@@ -50,6 +50,12 @@ SGL supports arbitrarily complex rules with boolean operators, as well
 as rules that require multiple people to jointly exercise a privilege.
 However, you should be able to learn the whole language in 10 minutes.
 See the [tutorial](https://dhh1128.github.io/sgl/docs/tutorial.html).
+
+>Note: SGL can be rendered in various styles. The docs generally use the
+recommended JSON rendering, since JSON is familiar, broadly supported,
+and easy to read. For information about SGL in ProtoBuf, MsgPack, CBOR,
+or other styles, see [Other Renderings](
+https://dhh1128.github.io/sgl/docs/other-renderings.html).
 
 SGL is not integrated with any particular enforcement mechanism, because
 it's designed for problems where you have to do your own enforcement.

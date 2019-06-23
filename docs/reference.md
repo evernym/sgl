@@ -1,6 +1,103 @@
 # SGL
 ## Reference
 
+### Rules
+A __rule__ is a JSON object in the form:
+
+```JSON
+{"grant": privileges, "to": criterion}
+```
+
+#### Privileges
+The `privileges` field is an array of tokens (strings) that name
+privileges meaningful in your problem domain.
+
+#### Criterion
+The `criterion` field defines who gets the privileges listed
+in the `grant`. The `criterion` is a JSON object that can take one of
+4 forms:
+
+1. A specific identifier.
+ 
+    ```JSON
+    {"id": "Fred"}
+    ```
+2. Members of a set, such as "3 of my friends".
+ 
+    ```JSON
+    {"n": 3, "role": "friend"}
+    ```
+    
+3. An "any" rule (boolean OR) to match any nested criterion in its array,
+such as "a parent or a sibling":
+
+    ```JSON
+    {"any": [
+        {"role": "parent"},
+        {"role": "sibling"}
+    ]}
+    ```
+    
+    Note that the inner criteria here use form #2 (members of a set), but
+    `n` has been omitted as unnecessary, leaving it with its default value
+    of 1.
+
+4. An "all" rule (boolean AND) to match all of the nested criteria in its
+array, such as "an employee, a customer, and a person with id "86745309":
+
+    ```JSON
+    {"any": [
+        {"role": "employee"},
+        {"role": "customer"},
+        {"id":  "8675309"}
+    ]}
+    ```
+
+Using `any` and `all`, rules can be composed--nested and combined to tree
+structures of arbitrary complexity.
+
+### Implementations
+
+SGL is usable in any programming language that supports JSON.
+The initial implementation is in python. Ports in other languages will
+be forthcoming. 
+
+### What SGL code does
+
+An implementation of SGL provides one or more APIs to test whether a
+particular group satisfies the criteria in the rule. For example, it
+answers questions like, "The group I'm testing contains a person with
+`id`=`Bob` and the roles `maintenance` and `employee`; given these
+privileges, do my rules allow him to turn off the air conditioning?" 
+
+The implementation in python does this with a single API:
+
+```python
+def satisfies(group, criteria, disjoint=True) -> bool  
+```
+
+This tells whether a group satisfies the criteria embodied in a rule.
+See [Reference](reference.md#satisfies) for an explanation of `disjoint`.
+
+Here, `group` is one or more people--the set about which we want to 
+check privileges. The python implementation provides a `Principal` object
+that makes building `group` easy. Taking advantage of python's loose
+typing, `group` can be an array of `Principal`, or a single `Principal`,
+or a `dict` built from `Principal`-compatible JSON. A `Principal`
+identifies an entity with an `id` or a set of `roles` that the entity
+holds, or both. So a valid `group` arg might be:
+
+```JSON
+[ {"id": "Bob", "roles": ["employee", "friend"]} ]
+```
+
+or maybe:
+
+```python
+Principal( id="Sally", roles=["CEO"] )
+```
+
+
 ### Structures
 
 #### Rule.grant
