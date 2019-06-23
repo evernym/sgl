@@ -40,7 +40,7 @@ A __condition__ defines the circumstances that must exist before someone
 can exercise the privileges listed in a [rule]( #rules).
 
 There are 4 variants of condition. The variants cannot be combined (e.g.,
-mixing "id" with "role" or "any" or "all"), although they can be
+mixing "id" with "roles" or "any" or "all"), although they can be
 implemented with a single structure that assigns `null` to unused fields.
 
 #### Condition with id
@@ -51,11 +51,11 @@ specific identifier:
 {"id": "Fred"}
 ```
     
-#### Condition with role
+#### Condition with roles
 This variant requires one or more principals to hold a role:
  
 ```JSON
-{"n": 3, "role": "friend"}
+{"n": 3, "roles": "friend"}
 ```
 
 The `n` field is optional. If omitted, `"n": 1` is assumed.
@@ -66,8 +66,8 @@ any of the conditions nested in its array:
 
 ```JSON
 {"any": [
-    {"role": "grandparent"},
-    {"role": "sibling"}
+    {"roles": "grandparent"},
+    {"roles": "sibling"}
 ]}
 ```
 
@@ -80,9 +80,9 @@ the list of 3 subconditions, any 2 must be satisfied, NOT that any of the
     
 ```JSON
 {"any": [
-    {"role": "employee"},
-    {"role": "investor"},
-    {"role": "customer"}
+    {"roles": "employee"},
+    {"roles": "investor"},
+    {"roles": "customer"}
 ], "n": 2}
 ```
 
@@ -99,8 +99,8 @@ the conditions nested in its array:
 
 ```JSON
 {"any": [
-    {"role": "employee"},
-    {"role": "customer"},
+    {"roles": "employee"},
+    {"roles": "customer"},
     {"id":  "8675309"}
 ]}
 ```
@@ -117,7 +117,7 @@ condition with id](#condition-with-id).
 
 #### Principal.roles
 A set of strings that name roles belonging to this principal.
-These are matched against a [condition with role](#condition-with-role).
+These are matched against a [condition with role](#condition-with-roles).
 
 Role names have the same [rules about format and comparison as privilege
 names](#privileges).

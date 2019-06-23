@@ -1,10 +1,10 @@
 {
   "any": [
-    {"n": 2, "role": "grandparent"},
+    {"n": 2, "roles": "grandparent"},
     {
       "all": [
-        {"role": "grandparent"},
-        {"n": 3, "role": "tribal_council"}
+        {"roles": "grandparent"},
+        {"n": 3, "roles": "tribal_council"}
       ]
     }
   ]

@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), '..'
 
 from sgl.api import satisfies
 
-my_rule = {"grant": ["backstage"], "when": { "role": "press" }}
+my_rule = {"grant": ["backstage"], "when": { "roles": "press" }}
 
 people = [
     {"id": "Alex", "roles": ["ticket-holder"]},

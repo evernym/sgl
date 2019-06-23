@@ -1,6 +1,6 @@
 {
   "all": [
-    {"role": "employee"},
-    {"n": 1, "role": "investor"}
+    {"roles": "employee"},
+    {"n": 1, "roles": "investor"}
   ]
 }

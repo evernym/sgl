@@ -2,8 +2,8 @@
   "grant": ["rations"],
   "when": {
     "all": [
-      {"role": "grandparent"},
-      {"role": "sibling", "n": 1}
+      {"roles": "grandparent"},
+      {"roles": "sibling", "n": 1}
     ]
   }
 }

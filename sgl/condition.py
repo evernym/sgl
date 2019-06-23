@@ -6,17 +6,17 @@ from .dbc import *
 
 
 class Condition:
-    def __init__(self, id: str = None, n: int = None, role: str = None,
+    def __init__(self, id: str = None, n: int = None, roles: str = None,
                  all: Sequence['Condition'] = None, any: Sequence['Condition'] = None):
-        specified = [True for x in [id, role, all, any] if bool(x)]
+        specified = [True for x in [id, roles, all, any] if bool(x)]
         precondition(len(specified) == 1,
-                     'the "id", "role", "all", and "any" parameters are mutually exclusive, and one must be specified.')
-        self.id = self.n = self.role = self.all = self.any = None
+                     'the "id", "roles", "all", and "any" parameters are mutually exclusive, and one must be specified.')
+        self.id = self.n = self.roles = self.all = self.any = None
         if id:
             precondition_is_str(id, "id")
             self.id = id
-        elif role:
-            self.role = role
+        elif roles:
+            self.roles = roles
             if isinstance(n, float):
                 precondition(n <= math.floor(n) and n >= math.ceil(n),
                              '"n" must be castable to int without losing precision.')
@@ -39,11 +39,11 @@ class Condition:
     def to_dict(self) -> dict:
         if self.id:
             return {"id": self.id}
-        if self.role:
+        if self.roles:
             if self.n == 1:
-                return {"role": self.role}
+                return {"roles": self.roles}
             else:
-                return {"n": self.n, "role": self.role}
+                return {"n": self.n, "roles": self.roles}
         if self.all:
             return {"all": [x.to_dict() for x in self.all]}
 
@@ -64,7 +64,7 @@ class Condition:
         any = value.get('any')
         if any:
             any = [Condition.from_dict(x) for x in any]
-        return Condition(value.get('id'), value.get('n'), value.get('role'), all, any)
+        return Condition(value.get('id'), value.get('n'), value.get('roles'), all, any)
 
     @classmethod
     def from_json(cls, json_text: str) -> 'Condition':

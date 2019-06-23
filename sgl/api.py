@@ -33,7 +33,7 @@ def _flatten_to_single_set(list_of_sets: List[set]) -> set:
 def _get_min_group_size(cond):
     if cond.id:
         return 1
-    elif cond.role:
+    elif cond.roles:
         return cond.n
     elif cond.any:
         n = 1000000000
@@ -67,10 +67,10 @@ def _get_matching_minimal_subsets(group: Set[Principal], c: Condition) -> List[S
             for p in group:
                 if p.id == c.id:
                     answer.append({p})
-        elif c.role:
+        elif c.roles:
             with_role = []
             for p in group:
-                if p.roles and (c.role in p.roles):
+                if p.roles and (c.roles in p.roles):
                     with_role.append(p)
             answer = [set(uc) for uc in _unique_combinations(with_role, c.n)]
         else:
@@ -203,10 +203,10 @@ def _check_satisfies(group: Set[Principal], c: Condition, disjoint) -> bool:
                 return True
     # If we have to match by role, see if our group includes enough that have the
     # required role.
-    elif c.role:
+    elif c.roles:
         n = c.n
         for p in group:
-            if p.roles and (c.role in p.roles):
+            if p.roles and (c.roles in p.roles):
                 n -= 1
                 if n == 0:
                     return True

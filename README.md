@@ -15,7 +15,7 @@ For example, here's an SGL rule that says only members of the press
 should be allowed backstage at a concert:
 
 ```JSON
-{"grant": ["backstage"], "when": { "role": "press" }}
+{"grant": ["backstage"], "when": { "roles": "press" }}
 ```
 
 And here's how you might use that rule in code:
@@ -23,7 +23,7 @@ And here's how you might use that rule in code:
 ```python
 from sgl.api import satisfies
 
-my_rule = {"grant": ["backstage"], "when": { "role": "press" }}
+my_rule = {"grant": ["backstage"], "when": { "roles": "press" }}
 
 people = [
     {"id": "Alex", "roles": ["ticket-holder"]},

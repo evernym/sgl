@@ -18,7 +18,6 @@ def load_all():
     def load(which):
         x = DynLoad(which)
         cname = which.__name__.lower() + 's'
-        if cname == 'criterions': cname = 'condition'
         folder = os.path.join(examples_dir, cname)
         try:
             for fname in os.listdir(folder):
@@ -32,7 +31,7 @@ def load_all():
                 x.dicts.append(dict)
                 x.objs.append(obj)
         except:
-            print(f"Exception while loading {folder}/{cname}")
+            print(f"Exception while loading {folder}/{fname}")
             raise
         return x
 

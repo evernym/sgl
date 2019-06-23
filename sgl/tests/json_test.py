@@ -77,9 +77,9 @@ def test_whom_empty_rejected():
 
 def test_whom_mutually_exclusive_rejected():
     with pytest.raises(PreconditionViolation):
-        Condition(id="a", role="b")
+        Condition(id="a", roles="b")
     with pytest.raises(PreconditionViolation):
-        Condition(role="b", any=[c.bob])
+        Condition(roles="b", any=[c.bob])
     with pytest.raises(PreconditionViolation):
         Condition(any=[c.bob], all=[c.grandparent])
 
@@ -96,7 +96,7 @@ def test_whom_ignores_extra_fields_in_dict():
 
 def test_whom_to_json_hardcoded():
     assert c.bob.to_json() == '{"id": "Bob"}'
-    assert c.majority_tribal_council.to_json() == '{"n": 3, "role": "tribal_council"}'
+    assert c.majority_tribal_council.to_json() == '{"n": 3, "roles": "tribal_council"}'
 
 
 def test_whom_to_from_json_roundtrip():
@@ -126,7 +126,7 @@ def test_rule_ignores_extra_fields_in_dict():
 def test_rule_to_json_hardcoded():
     assert r.enter_to_bob.to_json() == '{"grant": ["enter"], "when": {"id": "Bob"}}'
     assert r.rations_to_grandparent_and_sibling.to_json() == \
-           '{"grant": ["rations"], "when": {"all": [{"role": "grandparent"}, {"role": "sibling"}]}}'
+           '{"grant": ["rations"], "when": {"all": [{"roles": "grandparent"}, {"roles": "sibling"}]}}'
 
 
 def test_rule_to_from_json_roundtrip():

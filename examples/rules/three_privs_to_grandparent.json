@@ -1,4 +1,4 @@
 {
   "grant": ["medical", "school", "delegate"],
-  "when": {"role": "grandparent"}
+  "when": {"roles": "grandparent"}
 }

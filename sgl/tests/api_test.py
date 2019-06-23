@@ -100,7 +100,7 @@ def test_overlap_for_all_disjoint():
     check_disjoint_and_not([
         p.employee_and_investor,
         p.investor
-    ], Condition(all=[c.employee_and_investor, Condition.from_dict({"n": 2, "role": "investor"})]))
+    ], Condition(all=[c.employee_and_investor, Condition.from_dict({"n": 2, "roles": "investor"})]))
 
 
 def test_same_person_for_all_disjoint():
@@ -112,8 +112,8 @@ def test_same_person_for_all_disjoint():
 # complex work. Hopefully the debugging can take place on this one.
 def test_easiest_all_disjoint():
     x = Condition(all=[
-        Condition(n=2, role="employee"),
-        Condition(n=2, role="investor"),
+        Condition(n=2, roles="employee"),
+        Condition(n=2, roles="investor"),
     ])
     # The list of p should not satisfy the c listed above, because
     # we're asking for two employees and two investors -- and what we have is one
@@ -123,8 +123,8 @@ def test_easiest_all_disjoint():
 
 def test_without_disjoint_3_satisfies_2_plus_2():
     x = Condition(all=[
-        Condition(n=2, role="employee"),
-        Condition(n=2, role="investor"),
+        Condition(n=2, roles="employee"),
+        Condition(n=2, roles="investor"),
     ])
     assert satisfies(p.objs, x, disjoint=False)
 
@@ -132,12 +132,12 @@ def test_without_disjoint_3_satisfies_2_plus_2():
 def test_complex_all_disjoint():
     x = Condition(all=[
         c.bob,
-        Condition(n=2, role="sibling"),
+        Condition(n=2, roles="sibling"),
         Condition(all=[
             c.trusted,
             Condition(all=[
-                Condition(n=2, role="employee"),
-                Condition(n=2, role="investor"),
+                Condition(n=2, roles="employee"),
+                Condition(n=2, roles="investor"),
             ])
         ])
     ])
@@ -160,8 +160,8 @@ def test_satisfies_tolerates_dicts():
 def donttest_any_with_n_3():
     x = Condition.from_dict(
         {"any": [
-            {"role": "grandparent"},
-            {"role": "sibling"}
+            {"roles": "grandparent"},
+            {"roles": "sibling"}
         ], "n": 3}
     )
     p = p # to be concise

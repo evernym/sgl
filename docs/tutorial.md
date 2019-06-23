@@ -55,7 +55,7 @@ You could turn these decisions into 3 SGL rules, which, in the JSON
 ```JSON
 {
   "grant": ["medical", "school"],
-  "when": {"role": "grandparent"}
+  "when": {"roles": "grandparent"}
 }
 ```
 
@@ -64,8 +64,8 @@ You could turn these decisions into 3 SGL rules, which, in the JSON
   "grant": ["rations"],
   "when": {
     "any": [
-      {"role": "grandparent"},
-      {"role": "sibling"}
+      {"roles": "grandparent"},
+      {"roles": "sibling"}
     ]
   }
 }
@@ -76,11 +76,11 @@ You could turn these decisions into 3 SGL rules, which, in the JSON
   "grant": ["travel", "appoint"],
   "when": {
     "any": [
-      {"n": 2, "role": "grandparent"},
+      {"n": 2, "roles": "grandparent"},
       {
         "all": [
-          {"role": "grandparent"},
-          {"n": 3, "role": "tribal_council"}
+          {"roles": "grandparent"},
+          {"n": 3, "roles": "tribal_council"}
         ]
       }
     ]
