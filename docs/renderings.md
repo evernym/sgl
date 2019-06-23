@@ -62,3 +62,4 @@ uses an unquoted number to indicate that an ephemeral ID has been assigned.
 * [Overview](../README.md)
 * [Tutorial](tutorial.md)
 * [Reference](reference.md)
+* [Custom Properties](custom-properties.md)

@@ -92,8 +92,7 @@ You could turn these decisions into 3 SGL rules, which, in the JSON
 
 So far we've decided that grandparents and siblings have certain
 privileges--but just who __are__ the grandparents and siblings of a given
-orphan? In other words, what do we know about all the principals in the
-system?
+orphan, and what, specifically, do we know about them?
 
 Now is when you answer that question. You can store your answers in any
 way you like: by issuing [verifiable credentials](
@@ -114,6 +113,10 @@ pick, you must be able to produce data like this:
 ]
 ```
 
+>NOTE: In this tutorial, the only properties we are tracking and testing rules
+against for principals are the `id` and `roles` properties, but we can
+have much richer principals if that's helpful. See [Custom Properties](
+custom-properties.md) for more information. 
 
 #### Step 5: call APIs to make decisions
 
@@ -142,9 +145,10 @@ and that person were either a tribal council member or the child's
 grandparent, then `satisfies()` would return `True`.
 
 All of the ingredients used by SGL--rules, privileges, principals, and
-condition--can be much fancier than what's shown in this simple example. 
+condition--can be much fancier than what's shown in this scenario. 
 
 ## See also
 * [Overview](../README.md)
 * [Reference](reference.md)
 * [Renderings](renderings.md)
+* [Custom Properties](custom-properties.md)

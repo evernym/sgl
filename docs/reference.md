@@ -35,6 +35,26 @@ form](https://unicode.org/reports/tr15/); however, `snake_case` ASCII is
 recommended for maximum interoperability. Privileges are compared
 case-sensitive. Order doesn't matter, and duplicates are removed.
 
+### Principal
+
+Principals are objects that contain whatever properties are evaluated
+when determining whether a condition has been met. Two properties of
+a principal are predefined; [custom ones can be added](
+custom-properties.md).
+
+#### Principal.id
+Contains a string that uniquely identifies the principal. This might be
+an employee UUID, a customer email address, or a first name. The `id`
+field is optional and, when present, iw used to match against a [
+condition with id](#condition-with-id).
+
+#### Principal.roles
+A set of strings that name roles belonging to this principal.
+These are matched against a [condition with role](#condition-with-roles).
+
+Role names have the same [rules about format and comparison as privilege
+names](#privileges).
+
 ### Condition
 A __condition__ defines the circumstances that must exist before someone
 can exercise the privileges listed in a [rule]( #rules).
@@ -107,21 +127,6 @@ the conditions nested in its array:
 
 See the note about [`disjoint`](#disjoint) for advanced usage.
 
-### Principal
-
-#### Principal.id
-Contains a string that uniquely identifies the principal. This might be
-an employee UUID, a customer email address, or a first name. The `id`
-field is optional and, when present, iw used to match against a [
-condition with id](#condition-with-id).
-
-#### Principal.roles
-A set of strings that name roles belonging to this principal.
-These are matched against a [condition with role](#condition-with-roles).
-
-Role names have the same [rules about format and comparison as privilege
-names](#privileges).
-
 ### API
 
 #### `satisfies()`
@@ -166,3 +171,4 @@ Setting `disjoint` to `False` allows the overlap.
 * [Overview](../README.md)
 * [Tutorial](tutorial.md)
 * [Renderings](renderings.md)
+* [Custom Properties](custom-properties.md)
