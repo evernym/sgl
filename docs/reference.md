@@ -74,8 +74,8 @@ specific identifier:
 Normally, conditions like this test for an `id` that __equals__ the
 specified value. However, other operators can be used instead. This
 allows tests such as `>`, `!=`, and `like` (regex). Conditions that
-evaluate custom scalar properties work the same way. See [Custom
-Properties](custom-properties.md) for more details. 
+evaluate custom scalar properties work the same way. See [Custom Properties](
+custom-properties.md) for more details. 
     
 #### Condition with roles
 This variant requires the specified value to be in the `roles` set
