@@ -30,6 +30,7 @@ class Criterion:
             self.all = all
         else: #if any:
             precondition_nonempty_sequence_of_x(any, "any", Criterion)
+            self.n = n if (n and n > 1) else 1
             self.any = any
 
     def __str__(self):
@@ -45,7 +46,11 @@ class Criterion:
                 return {"n": self.n, "role": self.role}
         if self.all:
             return {"all": [x.to_dict() for x in self.all]}
-        return {"any": [x.to_dict() for x in self.any]}
+
+        if self.n > 1:
+            return {"any": [x.to_dict() for x in self.any], "n": self.n}
+        else:
+            return {"any": [x.to_dict() for x in self.any]}
 
     def to_json(self) -> str:
         return json.dumps(self.to_dict())

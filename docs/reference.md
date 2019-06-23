@@ -64,34 +64,44 @@ any of the criteria nested in its array:
 
 ```JSON
 {"any": [
-    {"role": "parent"},
+    {"role": "grandparent"},
     {"role": "sibling"}
 ]}
 ```
 
 Criteria with `any` can also have an `n` field. If present, it specifies
-that `n` matches must be found from among all the alternatives (instead
-of the default, 1 match). For example, this criterion says that 3
-parents or siblings must be found, in any combination that adds up to 3:
+that `n` subcriteria must be satisfied from among all the alternatives
+(instead of the default, 1). __Note that this is NOT requiring *n*
+matching principals from the group__. This criterion says that out of
+the list of 3 subcriteria, any 2 must be satisfied, NOT that any of the
+3 listed roles must match twice:
     
 ```JSON
 {"any": [
-    {"role": "parent"},
-    {"role": "sibling"}
-]}
+    {"role": "employee"},
+    {"role": "investor"},
+    {"role": "customer"}
+], "n": 2}
 ```
+
+In this situation, `n` can be a number larger than the number of elements
+in the `any` array of criteria. For example, if the above rule were
+changed so `n` equaled 5, the semantics would be that 5 times a match
+would have to be found for one of the 3 listed subcriteria. (The behavior
+here is affected by the [`disjoint`](#disjoint) parameter to the 
+`satisfies()` API.)
 
 #### Criterion with all
 This provides boolean AND features. It requires a match against all of
 the criteria nested in its array:
 
-    ```JSON
-    {"any": [
-        {"role": "employee"},
-        {"role": "customer"},
-        {"id":  "8675309"}
-    ]}
-    ```
+```JSON
+{"any": [
+    {"role": "employee"},
+    {"role": "customer"},
+    {"id":  "8675309"}
+]}
+```
 
 See the note about [`disjoint`](#disjoint) for advanced usage.
 

@@ -75,11 +75,32 @@ def _get_matching_minimal_subsets(group: Set[Principal], criterion: Criterion) -
             answer = [set(uc) for uc in _unique_combinations(with_role, criterion.n)]
         else:
             if criterion.any:
+                matches = []
                 for subcriterion in criterion.any:
                     subsets = _get_matching_minimal_subsets(group, subcriterion)
                     if subsets:
                         subset_for_this_criterion = _flatten_to_single_set(subsets)
-                        answer.append(subset_for_this_criterion)
+                        matches.append(subset_for_this_criterion)
+                if matches:
+                    if criterion.n == 1:
+                        answer = matches
+                    else:
+                        # Some of the logic that builds sets can't use lists or sets as
+                        # elements, because they are unhashable. Create a wrapper class to
+                        # work around this.
+                        class HashableSet:
+                            def __init__(self, set):
+                                self.set = set
+                            def __hash__(self):
+                                return id(self)
+                        list_of_lists_of_hashable_set = _unique_combinations(
+                                [HashableSet(m) for m in matches], criterion.n)
+                        if list_of_lists_of_hashable_set:
+                            # We have to merge the inner lists of sets, so we end up with
+                            # a single list of sets.
+                            for what_should_be_flat_list in list_of_lists_of_hashable_set:
+                                list_of_sets = [item.set for item in what_should_be_flat_list]
+                                answer.append(_flatten_to_single_set(list_of_sets))
 
             elif criterion.all:
                 first_subcriterion = criterion.all[0]
@@ -191,11 +212,14 @@ def _check_satisfies(group: Set[Principal], criterion: Criterion, disjoint) -> b
                     return True
     # If we are looking for a match against any one of several criteria,
     # test each criterion individually, and return true if we find one
-    # that matches.
+    # (or, for n > 1, n) match(es).
     elif criterion.any:
+        n = criterion.n if criterion.n else 1
         for criterion in criterion.any:
             if _check_satisfies(group, criterion, None):
-                return True
+                n -= 1
+                if n == 0:
+                    return True
         return False
     elif criterion.all:
         # If we're doing all (boolean AND) and disjoint subsets, we have to calculate
@@ -213,4 +237,3 @@ def _check_satisfies(group: Set[Principal], criterion: Criterion, disjoint) -> b
                     return False
             return True
     return False
-

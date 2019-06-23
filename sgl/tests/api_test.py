@@ -94,11 +94,13 @@ def check_disjoint_and_not(group, criteria, expected_when_disjoint = False):
 def test_same_person_for_all_not_disjoint():
     check_disjoint_and_not(principals.employee_and_investor, rules.call_meeting_to_employee_and_investor)
 
+
 def test_overlap_for_all_disjoint():
     check_disjoint_and_not([
         principals.employee_and_investor,
         principals.investor
     ], Criterion(all=[criteria.employee_and_investor, Criterion.from_dict({"n": 2, "role": "investor"})]))
+
 
 def test_same_person_for_all_disjoint():
     check_disjoint_and_not(principals.employee_and_investor, rules.call_meeting_to_employee_and_investor)
@@ -152,3 +154,17 @@ def test_satisfies_tolerates_dicts():
     satisfies({"id": "Fred"}, criteria.bob)
     satisfies(principals.bob, {"id": "Bob"})
     satisfies(principals.bob, {"grant": "enter", "to": {"id": "Bob"}})
+
+
+def donttest_any_with_n_3():
+    c = Criterion.from_dict(
+        {"any": [
+            {"role": "grandparent"},
+            {"role": "sibling"}
+        ], "n": 3}
+    )
+    p = principals # to be concise
+    assert not satisfies([p.grandpa_carl, p.grandma_carol, p.investor], c)
+    assert not satisfies([p.grandpa_carl, p.sister_emily, p.investor], c)
+    assert satisfies([p.grandpa_carl, p.grandma_carol, p.sister_emily, p.investor], c)
+    assert satisfies([p.grandpa_carl, p.sister_emily, p.brother_extra, p.investor], c)
