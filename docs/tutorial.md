@@ -1,4 +1,4 @@
-## Tutorial
+# SGL Tutorial
 
 SGL __rules__ grant __privileges__ to __principals__ (people, devices,
 software packages, or other entities) that match __criteria__.
@@ -101,7 +101,7 @@ LDAP, by creating a database of people and their relationships, etc.
 
 However, in the next step, we have to call SGL APIs. These require that
 knowledge about principals be expressed in a standard format (one or
-more SGL 'Principal' objects). Therefore, whatever storage mechanism you
+more SGL `Principal` objects). Therefore, whatever storage mechanism you
 pick, you must be able to produce data like this:
 
 ```JSON
