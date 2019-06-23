@@ -1,11 +1,11 @@
 # SGL Reference
 
->NOTE 1: SGL can be [rendered in various styles](
-https://dhh1128.github.io/sgl/docs/renderings.html). The definitions
-given here in the reference section just use the recommended JSON
-rendering, for conciseness and simplicity. It is assumed that you can
-interpolate into ProtoBuf, MsgPack, CBOR, human-friendly text, or
-another rendering if that is of interest to you.
+>NOTE 1: SGL can be rendered in various styles. The definitions given
+here in the reference section just use the recommended JSON rendering,
+for conciseness and simplicity. With [the documentation on renderings](
+https://dhh1128.github.io/sgl/docs/renderings.html), you should be able
+to interpolate into ProtoBuf, MsgPack, CBOR, human-friendly text, or
+another style if that is of interest.
 
 ### Rules
 A __rule__ is an object in the form:
@@ -36,22 +36,23 @@ recommended for maximum interoperability. Privileges are compared
 case-sensitive. Order doesn't matter, and duplicates are removed.
 
 ### Condition
-A __condition__ defines who gets the privileges listed in a [rule](
-#rules).
+A __condition__ defines the circumstances that must exist before someone
+can exercise the privileges listed in a [rule]( #rules).
 
 There are 4 variants of condition. The variants cannot be combined (e.g.,
-mixing "id" with "role" or "any" or "all", although they can be
-implemented with a single structure that assigns `null` to unused fields).
+mixing "id" with "role" or "any" or "all"), although they can be
+implemented with a single structure that assigns `null` to unused fields.
 
 #### Condition with id
-This variant requires a specific identifier:
+This variant requires that the principal seeking a privilege possess a
+specific identifier:
  
 ```JSON
 {"id": "Fred"}
 ```
     
 #### Condition with role
-This variant requires one or more principals holding a role:
+This variant requires one or more principals to hold a role:
  
 ```JSON
 {"n": 3, "role": "friend"}
@@ -61,7 +62,7 @@ The `n` field is optional. If omitted, `"n": 1` is assumed.
     
 #### Condition with any
 This variant provides boolean OR features. It requires a match against
-any of the condition nested in its array:
+any of the conditions nested in its array:
 
 ```JSON
 {"any": [
@@ -70,11 +71,11 @@ any of the condition nested in its array:
 ]}
 ```
 
-Criteria with `any` can also have an `n` field. If present, it specifies
-that `n` subcriteria must be satisfied from among all the alternatives
+Conditions with `any` can also have an `n` field. If present, it specifies
+that `n` subconditions must be satisfied from among all the alternatives
 (instead of the default, 1). __Note that this is NOT requiring *n*
 matching principals from the group__. This condition says that out of
-the list of 3 subcriteria, any 2 must be satisfied, NOT that any of the
+the list of 3 subconditions, any 2 must be satisfied, NOT that any of the
 3 listed roles must match twice:
     
 ```JSON
@@ -88,13 +89,13 @@ the list of 3 subcriteria, any 2 must be satisfied, NOT that any of the
 In this situation, `n` can be a number larger than the number of elements
 in the `any` array of condition. For example, if the above rule were
 changed so `n` equaled 5, the semantics would be that 5 times a match
-would have to be found for one of the 3 listed subcriteria. (The behavior
+would have to be found for one of the 3 listed subconditions. (The behavior
 here is affected by the [`disjoint`](#disjoint) parameter to the 
 `satisfies()` API.)
 
 #### Condition with all
 This provides boolean AND features. It requires a match against all of
-the condition nested in its array:
+the conditions nested in its array:
 
 ```JSON
 {"any": [

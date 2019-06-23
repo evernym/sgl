@@ -23,24 +23,26 @@ TODO
 
 TODO
 
-### Friendly
+### Plain English
 
 This might be a useful rendering when displaying rules to people who
 are not developers. For example, it could be used in documentation, 
-academic papers, error messages, and so forth.
+academic papers, error messages, and so forth. (Of course, English isn't
+the only human language that might benefit from a friendly rendering.
+Contributions for other languages would be gladly accepted!)
 
 In this rendering, rules look like:
 
 ```text
-Grant priv1, priv2, priv3 if id is "Bob". 
-Grant priv4 if role is role1.
-Grant priv5, priv6 if any of (subcriterion1; subcriterion2).
-Grant priv7 if 2 of (subcriterion3; subcriterion4; subcriterion5).
-Grant priv8 if all of (subcriterion6; subcriterion7).
+Grant priv1, priv2, priv3 when id = "Bob". 
+Grant priv4 when role = role1.
+Grant priv5, priv6 when any of (subcriterion1; subcriterion2).
+Grant priv7 when 2 of (subcriterion3; subcriterion4; subcriterion5).
+Grant priv8 when all of (subcriterion6; subcriterion7).
 ```
 
 Note the capital letter on "Grant", the period at the end of each
-rule/sentence, and the semicolons that separate subcriteria. The words
+rule/sentence, and the semicolons that separate subconditions. The words
 "Grant", "when", "is", "of", "any" and "all" function like reserved words
 in the syntax. Note that only `id` is quoted; because names of priviliges
 and roles are tokens without whitespace, no quotes are needed or allowed

@@ -6,8 +6,8 @@ https://circleci.com/gh/dhh1128/sgl)
 SGL is a simple but flexible [DSL](
 https://en.wikipedia.org/wiki/Domain-specific_language) for granting and
 testing privileges (authorization). You can use it to write rules about
-who should be able to do what, and then to compare people to the rules
-to enforce custom logic. This lets you create your own [Role-Based
+who should be able to do what, and then to compare circumstances to the
+rules to enforce custom logic. This lets you create your own [Role-Based
 Access Control]( https://en.wikipedia.org/wiki/Role-based_access_control)
 mechanisms, as well as authorizations based on other criteria.
 
@@ -48,8 +48,9 @@ Welcome backstage, Sofia.
 
 SGL supports arbitrarily complex rules with boolean operators, as well
 as rules that require multiple people to jointly exercise a privilege.
-However, you should be able to learn the whole language in 10 minutes.
-See the [tutorial](https://dhh1128.github.io/sgl/docs/tutorial.html).
+However, it's simple enough that you should be able to learn it in just
+a few minutes. See the [tutorial](
+https://dhh1128.github.io/sgl/docs/tutorial.html).
 
 >Note: SGL can be [rendered in various styles](
 https://dhh1128.github.io/sgl/docs/renderings.html). The example above

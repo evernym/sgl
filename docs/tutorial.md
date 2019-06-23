@@ -1,7 +1,8 @@
 # SGL Tutorial
 
 SGL __rules__ grant __privileges__ to __principals__ (people, devices,
-software packages, or other entities) if they satisfy __conditions__.
+software packages, or other entities) when (if) they satisfy
+__conditions__.
 
 
 ### General Pattern
@@ -22,7 +23,7 @@ Suppose you are building software that enforces guardianship procedures
 for orphan children in a refugee camp (one of the use cases for which
 SGL was developed). You need something a bit fancier that just "X is the
 guardian of Y" -- an older sibling might have a few guardianship
-privileges, a grandparent more, etc.
+privileges, a grandparent more privileges, etc.
 
 #### Step 1: name privileges
 
@@ -99,8 +100,8 @@ way you like: by issuing [verifiable credentials](
 https://w3c.github.io/vc-data-model/), by adding custom properties in
 LDAP, by creating a database of people and their relationships, etc.
 
-However, in the next step, we have to call SGL APIs. These require that
-knowledge about principals be expressed in a standard format (one or
+However, in the next step, we will have to call SGL APIs. These require
+that knowledge about principals be expressed in a standard format (one or
 more SGL `Principal` objects). Therefore, whatever storage mechanism you
 pick, you must be able to produce data like this:
 
