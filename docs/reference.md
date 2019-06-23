@@ -39,8 +39,8 @@ case-sensitive. Order doesn't matter, and duplicates are removed.
 
 Principals are objects that contain whatever properties are evaluated
 when determining whether a condition has been met. Two properties of
-a principal are predefined; [custom ones can be added](
-custom-properties.md).
+a principal are predefined; 
+[custom ones can be added](custom-properties.md).
 
 #### Principal.id
 Contains a string that uniquely identifies the principal. This might be
@@ -74,8 +74,8 @@ specific identifier:
 Normally, conditions like this test for an `id` that __equals__ the
 specified value. However, other operators can be used instead. This
 allows tests such as `>`, `!=`, and `like` (regex). Conditions that
-evaluate custom scalar properties work the same way. See [Custom Properties](
-custom-properties.md) for more details. 
+evaluate custom scalar properties work the same way.
+See [Custom Properties](custom-properties.md) for more details. 
     
 #### Condition with roles
 This variant requires the specified value to be in the `roles` set
