@@ -19,7 +19,11 @@ TODO
 
 TODO
 
-### Human-friendly text
+### CBOR
+
+TODO
+
+### Friendly
 
 This might be a useful rendering when displaying rules to people who
 are not developers. For example, it could be used in documentation, 
