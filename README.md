@@ -4,11 +4,13 @@ https://circleci.com/gh/dhh1128/sgl)
 # SGL (Simple Grant Language)
 
 SGL is a simple but flexible [DSL](
-https://en.wikipedia.org/wiki/Domain-specific_language) for granting and
-testing privileges (authorization). You can use it to write rules about
-who should be able to do what, and then to compare circumstances to the
-rules to enforce custom logic. This lets you create your own [Role-Based
-Access Control]( https://en.wikipedia.org/wiki/Role-based_access_control)
+https://en.wikipedia.org/wiki/Domain-specific_language)--like [XACML](
+https://en.wikipedia.org/wiki/XACML) but simpler and JSON-oriented--for
+granting and testing privileges (authorization). You can use it to write
+rules about who should be able to do what, and then to compare
+circumstances to the rules to enforce custom logic. This lets you create
+your own [Role-Based Access Control](
+https://en.wikipedia.org/wiki/Role-based_access_control)
 mechanisms, as well as authorizations based on other criteria.
 
 For example, here's an SGL rule that says only members of the press
