@@ -10,9 +10,10 @@ another style if that is of interest.
 ### Rules
 A __rule__ is an object in the form:
 
-```JSON with comments
+```jsonc
 {
-  "grant": privileges, // An array of strings
+  // An array of strings
+  "grant": privileges, 
   "when": condition    // A condition object
 }
 ```
