@@ -18,15 +18,15 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="sgl",
-    version="0.9.14",
+    version="0.9.15",
     description="Simple Grant Language",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/dhh1128/sgl",
+    url="https://github.com/evernym/sgl",
     author="Daniel Hardman",
     author_email="daniel.hardman@gmail.com",
     license="Apache 2.0",
-    keywords="sgl json dsl authorization authz verifiable credentials did",
+    keywords="sgl json dsl xacml authorization authz verifiable credentials did",
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3",
@@ -43,5 +43,5 @@ setup(
             "realpython=reader.__main__:main",
         ]
     },
-    download_url='https://github.com/dhh1128/sgl/archive/v0.9.14.tar.gz',
+    download_url='https://github.com/evernym/sgl/archive/v0.9.15.tar.gz',
 )
