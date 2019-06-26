@@ -29,7 +29,7 @@ my_rule = {"grant": ["backstage"], "when": { "roles": "press" }}
 
 people = [
     {"id": "Alex", "roles": ["ticket-holder"]},
-    {"id": "Sofia", "roles": ["ticket-holder", "premium"]}
+    {"id": "Sofia", "roles": ["ticket-holder", "press"]}
 ]
 
 for person in people:
