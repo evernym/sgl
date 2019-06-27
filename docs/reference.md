@@ -27,16 +27,18 @@ Contains a [condition](#condition).
  
 #### Rule.id
 This field is optional and often omitted -- hence it is not shown in the
-example above. If present, it provides a convenient identifier that can
-be used to refer to the rule. It is not used by SGL processing.
+example above. If present, it is a string that provides a convenient
+identifier to reference the rule. It is not used by SGL processing.
 
 ### Privileges
 You make up privilege names. They should be short tokens without leading,
 trailing, or internal whitespace, and without punctuation characters
-that could cause problems for parsers. Unicode is supported in [NFKC
-form](https://unicode.org/reports/tr15/); however, `snake_case` ASCII is
-recommended for maximum interoperability. Privileges are compared
-case-sensitive. Order doesn't matter, and duplicates are removed.
+that could cause problems for parsers. Unicode is supported (using [NFKC
+form](https://unicode.org/reports/tr15/) is strongly recommended to
+guarantee deterministic comparison). However, `snake_case` ASCII is
+the best choice if practical, for maximum interoperability. Privileges
+are compared case-sensitive. Order doesn't matter, and duplicates are
+removed.
 
 ### Principal
 
