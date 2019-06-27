@@ -10,14 +10,12 @@ another style if that is of interest.
 ### Rules
 A __rule__ is an object in the form:
 
-```JSON
-{"grant": privileges, "when": condition}
+```jsonc
+{
+  "grant": privileges, // An array of strings
+  "when": condition    // A condition object
+}
 ```
-
-#### Rule.id
-This field is optional and often omitted -- hence it is not shown in the
-example above. If present, it provides a convenient identifier that can
-be used to refer to the rule. It is not used by SGL processing.
 
 #### Rule.grant
 Contains a set of strings that name privileges meaningful in your
@@ -27,6 +25,11 @@ below.
 #### Rule.when
 Contains a [condition](#condition).
  
+#### Rule.id
+This field is optional and often omitted -- hence it is not shown in the
+example above. If present, it provides a convenient identifier that can
+be used to refer to the rule. It is not used by SGL processing.
+
 ### Privileges
 You make up privilege names. They should be short tokens without leading,
 trailing, or internal whitespace, and without punctuation characters
@@ -44,9 +47,15 @@ a principal are predefined;
 
 #### Principal.id
 Contains a string that uniquely identifies the principal. This might be
-an employee UUID, a customer email address, or a first name. The `id`
-field is optional and, when present, is used to match against a [
-condition with id](#condition-with-id).
+an employee UUID, a customer email address, or a first name. In the
+context of [decentralized identity](
+https://docs.google.com/presentation/d/1WwZSs3akdoztkXPZ1LHBqyYEDyunxDRbwNr6vvh3x-o/edit)
+or [self-sovereign identity](
+https://medium.com/evernym/the-three-models-of-digital-identity-relationships-ca0727cb5186),
+which provided foundational SGL use cases, making the ID a [DID](
+https://w3c-ccg.github.io/did-spec/) is a good idea. The `id` field is
+optional and, when present, is used to
+match against a [condition with id](#condition-with-id).
 
 #### Principal.roles
 A set of strings that name roles belonging to this principal.
