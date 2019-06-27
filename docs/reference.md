@@ -33,10 +33,12 @@ identifier to reference the rule. It is not used by SGL processing.
 ### Privileges
 You make up privilege names. They should be short tokens without leading,
 trailing, or internal whitespace, and without punctuation characters
-that could cause problems for parsers. Unicode is supported in [NFKC
-form](https://unicode.org/reports/tr15/); however, `snake_case` ASCII is
-recommended for maximum interoperability. Privileges are compared
-case-sensitive. Order doesn't matter, and duplicates are removed.
+that could cause problems for parsers. Unicode is supported (using [NFKC
+form](https://unicode.org/reports/tr15/) is strongly recommended to
+guarantee deterministic comparison). However, `snake_case` ASCII is
+the best choice if practical, for maximum interoperability. Privileges
+are compared case-sensitive. Order doesn't matter, and duplicates are
+removed.
 
 ### Principal
 
