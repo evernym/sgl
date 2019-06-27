@@ -27,8 +27,8 @@ Contains a [condition](#condition).
  
 #### Rule.id
 This field is optional and often omitted -- hence it is not shown in the
-example above. If present, it provides a convenient identifier that can
-be used to refer to the rule. It is not used by SGL processing.
+example above. If present, it is a string that provides a convenient
+identifier to reference the rule. It is not used by SGL processing.
 
 ### Privileges
 You make up privilege names. They should be short tokens without leading,
