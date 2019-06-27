@@ -55,7 +55,7 @@ possible:
 and `contains`. When the comparison operators are used with a value
 that's a set, they are testing the set's size. Thus, if we wanted to
 say that the insurance discount from our example above depended not on
-a specific certification, but having 3 or more certications, we could
+a specific certification, but having 3 or more certifications, we could
 revise the rule to:
 
     ```JSON
