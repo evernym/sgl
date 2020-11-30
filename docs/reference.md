@@ -103,7 +103,7 @@ See [Custom Properties](custom-properties.md) for more details.
     
 #### Condition with any
 This variant provides boolean OR features. It requires a match against
-any of the conditions nested in its array:
+any (= one or more) of the conditions nested in its array:
 
 ```JSON
 {"any": [
@@ -114,32 +114,46 @@ any of the conditions nested in its array:
 
 Conditions with `any` can also have an `n` field. If present, it specifies
 that `n` subconditions must be satisfied from among all the alternatives
-(instead of the default, 1). __Note that this is NOT requiring *n*
-matching principals from the group__. This condition says that out of
-the list of 3 subconditions, any 2 must be satisfied, NOT that any of the
-3 listed roles must match twice:
+(instead of the default, 1). This comes in two flavours:
+
+The first flavour says that *n* occurrances of any of listed roles must be matched.
+
+```JSON
+{"any": [
+    {"n": 2} 
+    {"roles": "employee"},
+    {"roles": "investor"},
+    {"roles": "customer"}
+]}
+```
+
+e.g. any combination of principals satisfies the condition for as long as
+there are two principles, both with the same role (which can be the role
+of employee, investor, or customer).
+
+The second flavour says that out of the list of subconditions, any *n* 
+must be satisfied:
     
 ```JSON
 {"any": [
     {"roles": "employee"},
     {"roles": "investor"},
     {"roles": "customer"}
-], "n": 2}
+], "n": 5}
 ```
 
-In this situation, `n` can be a number larger than the number of elements
-in the `any` array of condition. For example, if the above rule were
-changed so `n` equaled 5, the semantics would be that 5 times a match
-would have to be found for one of the 3 listed subconditions. (The behavior
-here is affected by the [`disjoint`](#disjoint) parameter to the 
-`satisfies()` API.)
+In this situation, `n` can be a number larger (or smaller) than the number of 
+elements in the `any` array of condition. In the above example where n = 5,
+this means that 5 times a match would have to be found for one of the 3 listed
+subconditions. (The behavior here is affected by the [`disjoint`](#disjoint) 
+parameter to the `satisfies()` API.)
 
 #### Condition with all
 This provides boolean AND features. It requires a match against all of
 the conditions nested in its array:
 
 ```JSON
-{"any": [
+{"all": [
     {"roles": "employee"},
     {"roles": "customer"},
     {"id":  "8675309"}
